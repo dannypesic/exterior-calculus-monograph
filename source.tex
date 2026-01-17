@@ -1,0 +1,242 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath} 
+\usepackage{esint} 
+\usepackage{amsfonts} 
+\usepackage{amssymb} 
+\usepackage{geometry}  
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\atlas}{\mathcal{A}}
+\newcommand{\p}{\partial}
+\newcommand{\at}[2]{\left. #1 \right|_{#2}}
+
+
+
+
+\begin{document}
+
+\title{Exterior Calculus}
+\author{Daniel Pesic}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction from Vector Calculus TO-DO: Refactor for narrative appeal}
+\subsection{Vector Calculus Motive}
+Vector Calculus is a powerful yet limited tool. It allows us to extend the concepts from single-variable Calculus to higher dimensional spaces, more complex functions, and different varieties of functions. However, it begins to fail when space becomes non-Euclidean or the functions we attempt to measure rise in complexity and abstraction; when we ask:
+\begin{itemize}
+    \item How can we analyze a function with a curved input space?
+    \item In Vector Calculus, curl is limited to vector fields in $\R^3$. How can we find the vorticity of a higher dimensional vector field?
+    \item How can we analyze functions intrinsically without relying on coordinates?
+\end{itemize}
+
+The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond. 
+\subsection{Limitations of Integral Theorems}
+Consider the three integral theorems of Vector Calculus.
+\\\\ Green's Theorem:
+\[
+\oint_{\p D}{Pdx+Qdy} = \iint_{D}{\left(\vec{\nabla} \times \vec{F}\right) dxdy}
+\]
+Stokes' Theorem:
+\[
+\oint _{\p S}{\vec{F}\cdot d\vec{r}} = \iint_{S}{\left(\vec{\nabla} \times \vec{F}\right)\cdot \hat{n}dS}
+\]
+Gauss's Theorem:
+
+\[
+\varoiint_{\p V} {\left(\vec{F} \cdot \hat{n} \right)}dS = \iiint_{V}{\left(\vec{\nabla} \cdot \vec{F}\right)dV}
+\]
+From the Vector Calculus viewpoint, these theorems each have specific use cases and seem quite different compared to each other; they are only applicable in sub-regions of $\R^3$ with specific kinds of functions. However, one might notice a pattern shared between them: the boundary integral of some function equals the integral of some form of derivative of the function. This can even be seen in the ordinary Fundamental Theorem of Calculus:
+
+\[
+f(b)-f(a) = \int_{[a,b]}{\frac{df}{dx}dx} \iff\int_{\p[a,b]}{f} =\int_{[a,b]}{\frac{df}{dx}dx}
+\]
+
+This pattern is not simply coincidental, as we will soon discover how these four theorems emerge from one overarching theorem at the top of Exterior Calculus: the Generalized Stokes' Theorem. 
+
+\subsection{Roadmap}
+Exterior Calculus provides a unified framework that expands the concepts of Vector Calculus through extension, generalization, and unification.
+\subsubsection{Extension}
+Vector Calculus handles derivatives and integrals on $\R^3$. Exterior Calculus extends these concepts to arbitrary dimensions on curved spaces known as manifolds. 
+\subsubsection{Generalization}
+The derivative in Exterior Calculus, the exterior derivative, generalizes gradient, curl, and divergence into one operator. Similarly, integration over manifolds generalizes line, surface, and volume integrals in a dimension-independent manner. 
+\subsubsection{Unification}
+Exterior Calculus unifies Green's, Stokes', and Gauss's theorems, along with the Fundamental Theorem of Calculus into one abstract theorem: the Generalized Stokes Theorem.
+
+These functions of Exterior Calculus are precisely what make it such a powerful framework. Throughout this paper, we will begin at the level of Vector Calculus and build up through these extensions, generalizations, and unifications to show the full theory of Exterior Calculus along with its geometric and physical applications.
+
+
+\section{Manifolds}
+
+A homeomorphism is a bijective mapping between topological spaces (such as manifolds or $\R^n$) that is continuous and has a continuous inverse. 
+
+A manifold is an $n$-dimensional structure that is locally homeomorphic to $\R^n$. Each open subset of the manifold has a homeomorphism to a subset of $\R^n$. For example, each hemisphere of the sphere $S^2$ can be mapped to $\R^2$.
+
+Manifolds are important to Exterior Calculus as they serve as the generalization of space. A scalar function $f$ can live on a manifold $M$ by $f:M\to \R$. This is an example of extension from Vector Calculus: $\R^n$ is also a manifold and thus a function input space, but we can now use non-Euclidean input spaces as well. In Vector Calculus, we perform calculus on smooth function. For Exterior Calculus, we need a smooth function defined on a smooth manifold. We will now look into the mathematical construction behind smooth manifolds.
+
+\subsection{Constructing Smooth Manifolds}
+
+\subsubsection{Topological Manifolds}
+Manifolds are a complex structure deeply rooted in Topology. To simplify this construction, we will focus on the differentiability aspect, as this serves to be much more important for Exterior Calculus. NOTE: I should probably add more things here later.
+
+\subsubsection{Coordinate Charts}
+For each point $p\in M$, define a local coordinate chart as:
+\[
+(U,\varphi), \quad \varphi = (x^1,x^2, \dots, x^n), \quad p\in U
+\]
+$U$ is an open neighborhood around $p$ that is homeomorphic to $\R^n$ through the map $\varphi:U\to V\subset\R^n$. The coordinate functions $x^i:U\to \R$ give a method of labeling points in the neighborhood; however, it is an important distinction that coordinates are not connected to the geometric structure of the manifold. This will be covered in Section 3. 
+
+Unfortunately, coordinate charts alone are not enough to describe the full differentiable structure of a manifold. They represent the mapping between each discrete neighborhood to an open subset of $\R^n$, but this does not let us understand the differentiable structure that lies between the charts. We will now define this transition structure.
+
+\subsubsection{Transition Maps}
+Transition maps let us understand the behavior of two overlapping coordinate charts. Define two coordinate charts $\left( U,\varphi\right)$ and $\left( V,\psi\right)$. The transition map is a homeomorphism defined by:
+\[
+\psi \circ\varphi^{-1} : \varphi \left( U \cap V \right) \to \psi \left( U \cap V \right)
+\]
+
+If the transition map of two charts is a diffeomorphism, i.e., its representation in coordinates is $C^\infty$, the two charts are smoothly compatible.
+
+The concept of smoothly compatible charts is paramount to constructing smooth manifolds. For example, choose two intersecting charts. The transition map allows you to go from one coordinate system to another. If the transition map is not smooth, a function that appears smooth in $\varphi$-coordinates may become non-differentiable in $\psi$-coordinates. Smoothness cannot be an intrinsic property of the manifold if it depends on the chart. However, if the transition map is smooth and if a function $f:M\to \R$ is smooth in $\varphi$ coordinates, then 
+\[
+f \circ \psi^{-1} = \left( f \circ\varphi^{-1} \right) \circ \left( \varphi \circ \psi^{-1} \right)
+\]
+becomes smooth as a composition of smooth maps. Thus, smoothness becomes an intrinsic property of $f$ and thus the manifold rather than depending on a specific chart. We will now use this to finish our construction.
+\subsubsection{Atlases}
+In cartography, an atlas is a comprehensive collection of charts meant to give information about a region. In topology, an atlas is a comprehensive collection of charts meant to give information about the geometry of a manifold.
+
+Formally, an atlas $\atlas$ is defined as the set of all charts $\left( U,\varphi\right )$ that cover $M$, meaning that
+\[
+\forall p \in M, \; \exists \left( U,\varphi\right ) \in \atlas, \quad p\in U
+\]
+In this sense, an atlas provides all homeomorphisms for any point on a manifold to be mapped to $\R^n$, giving the manifold its structure. A smooth atlas is a set of charts such that any two charts are smoothly compatible with each other. A maximal smooth atlas is the set of all possible charts covering the manifold that are smoothly compatible with each other. This global, comprehensive smooth structure lets us finally define the smooth manifold.
+
+
+\subsubsection{Smooth Manifolds}
+
+A smooth manifold $M$ is defined as a set of points combined with a maximal smooth atlas $\atlas$. With this definition, we can extend the idea of space to include all smooth manifolds rather than just $\R^n$. Now, we can work on spheres, tori, and any smooth surface. By defining a smooth manifold, we can define a smooth function and perform calculus on it. For example, a scalar function on a manifold is defined by $f: M\to \R$. $f$ is smooth ($f \in C^{\infty}(M)$) iff the composition$f \circ \varphi^{-1}:\varphi(U) \subset\R^n\to \R$ is infinity differentiable in the usual sense. However, this generalization raises more questions than it answers. How can a derivative work on a curved surface?
+
+\subsection{Tangent Vectors as Derivations}
+In Vector Calculus, the directional derivative finds the derivative of a scalar function on a particular vector. In Exterior Calculus, we can define abstract vectors (that is, vectors not defined in coordinates) that are tangent to a manifold and act as a derivative operator, a derivation.
+\subsubsection{Local Coordinate Vector Fields}
+In $\R^n$, the global coordinates induce a global coordinate vector field. For example, in $\R^3$, the coordinates $(x,y,z)$ induce $\hat{i},\hat{j},\hat{k}$.
+
+Since a smooth manifold does not have a global coordinate chart, the coordinate vector fields must be expressed locally. Take a point $p$. The coordinate chart
+\[
+(U,\varphi), \quad \varphi = (x^1,x^2, \dots, x^n), \quad p\in U
+\]
+induces the local coordinate vector field $\frac{\p}{\p x^1}, \frac{\p}{\p x^2},\dots \frac{\p}{\p x^n}$ on $U$. These vectors point in the direction of their corresponding coordinate. This notation of expressing coordinate vectors as partial derivative operators will be explained in Section 2.2.3. For now, treat it purely as notation.
+\subsubsection{Tangent Vectors}
+A tangent vector on a manifold is a vector attached at a specific point $p$ such that is is tangent to the surface of the manifold. In coordinates, a tangent vector is just a linear combination of the local coordinate vector field. However, we will define a more geometric definition for abstract tangent vectors that does not rely on an arbitrary coordinate chart.
+
+Choose a smooth parametric curve on an embedded manifold $\gamma:I \subseteq \R \to M$ such that $\gamma(0)=p$. A vector $v$ is a tangent vector at $p$ iff $\dot{\gamma}(0) = v$. An important distinction is that the derivative of a curve on a manifold is only predefined when the manifold can be embedded in $\R^n$. We can choose a more abstract definition using derivations. 
+
+\subsubsection{Derivations}
+A derivation is a differential operator that computes directional derivatives along an abstract tangent vector. The tangent vector is not an input to a derivation, but the operator itself. Specifically, a tangent vector is a derivation $v:C^{\infty}{(M)} \to \R$.
+
+For an operator to be a derivation, it must satisfy these two axioms:
+\begin{enumerate}
+    \item Linearity: $\forall f,g \in C^{\infty}(M)$ and $c,d \in \R, \quad v(cf + dg) = cv(f)+dv(g)$
+    \item Leibniz Rule: $v(fg) =fv(g)+gv(f)$
+\end{enumerate}
+In coordinates, the tangent vector becomes a linear combination of local coordinate vectors:
+\[
+v^i\frac{\p}{\p x^i}
+\]
+The numerical value of the derivation applied to a function is:
+\[
+v^i\at{\frac{\p f}{\p x^i}}{p} 
+\]
+Another way to represent the derivation on a function is through the abstract definition with parametric curves:
+\[
+v(f)=\frac{d}{dt}\at{f(\gamma(t))}{t=0}
+\]
+This generalization through tangent vectors gives us an abstract way to represent directional derivatives on manifolds and serves as a crucial stepping stone towards higher level concepts.
+\subsubsection{More on the Leibniz Rule}
+The Leibniz rule $v(fg)=fv(g)+gv(f)$ is a minimal equation that encodes differential properties into a functional. It creates a derivation by satisfying these axioms of differentiation:
+\begin{enumerate}
+    \item The derivative of a constant must be 0
+    \item Derivatives must only extract first order change
+\end{enumerate}
+
+When a constant is plugged into a derivation, the Leibniz rule forces:
+\[
+v(1\cdot1) = 1\cdot v(1)+1\cdot v(1) \implies v(1)=2v(1) \implies v(1)=0
+\]
+\[
+\forall c\in\R, v(c)=v(\sum_{c}{1}) = \sum_{c}{v(1)} = \sum_{c}{0} = 0
+\]
+Additionally, the Leibniz rule forces derivations to extract solely first order change. Consider the product rule of differentiation for functions in $\R^n$, the specific case of the Leibniz rule in Euclidean space:
+\[
+\frac{d}{dx^n}\left[fg\right] =f\frac{dg}{dx^n}+g\frac{df}{dx^n}
+\]
+If both $f$ and $g$ are 0 at a point $p$, the derivative in every direction must be 0. Regardless of higher order change and curvature, the function $fg$ must have no first order change, ensuring that the derivation measures only the instantaneous change of a function at a point. This property is retained when generalizing to manifolds, which enforces the idea how the Leibniz rule forces derivations to satisfy the axioms of differentiation.
+
+\subsection{Tangent Spaces and Bundles}
+
+ While tangent vectors are useful as derivations, we can group them into ordered structures to help us better understand a manifold.
+
+\subsubsection{Tangent Spaces}
+The set of all tangent vectors at a point $p$ is called the tangent space $T_pM$. Since, in coordinates, every tangent vector at a point is a linear combination of its local coordinate vectors $\frac{\p}{\p x^1},\frac{\p}{\p x^2}...\frac{\p}{\p x^n} $, the local coordinate vectors form a basis for $T_pM$ with respect to a local chart. Every tangent vector $v$ at $p$ satisfies $v \in T_pM$. 
+
+On an $n$-manifold, $T_pM$ is an $n$-dimensional vector space analogous to $\R^n$
+
+\subsubsection{Tangent Bundles}
+The tangent bundle $TM$ is the set of all tangent vectors on a manifold. It is defined by: \[
+TM :=\bigsqcup_{p\in M}{T_pM}
+\]
+The disjoint union forces each vector to be paired with its origin point. Thus, it can also be defined as:
+\[
+TM := \bigcup_{p\in M}{\{p\} \times T_pM}
+\]
+Therefore, each element of $TM$ takes the form $(p,v)$. This allows us to create a projection map:
+\[
+\pi:TM \to M \quad(p,v) \mapsto p
+\]
+A tangent vector fiber over a point $p$ in $M$ is $\pi^{-1}(p)$, which gives $T_pM$. This allows us to create global mappings and assignments over the manifold.
+\subsubsection{Vector Fields}
+A vector field, that is, a section of the tangent bundle, assigns a tangent vector to each point on a manifold: 
+\[
+X:M\to TM
+\]
+It must satisfy $\pi \circ X = \text{id}_M$, where $\text{id}_M$ is the identity map on the manifold. Intuitively, this ensures that vectors are assigned correctly.
+At a point, the vector field satisfies $X(p)= v\in T_pM$. Defining the tangent bundle and projection map helps us create a simple definition for tangent vector fields on a manifold.
+
+\subsection{Submanifolds and Boundaries}
+The final parts of manifolds we must mention are submanifolds and boundaries. These are imperative to define future notions of integration.
+
+\subsubsection{Submanifolds}
+
+Given two manifolds $M$ and $N$, $M$ is a submanifold of $N$ iff $M \subseteq N$. For example, the sphere $S^2$ is a submanifold of $\R^3$ as $S^2 \subset \R^3$. Submanifolds give us a generalized way to define regions for integration. For example, the region $[0,1] \times [0,1]$ can be expressed as a submanifold of $\R^2$. 
+
+There are also two more structured types of submanifolds: immersions and embeddings. 
+
+An immersion is a smooth map between manifolds $f:M \to N$ such that the image $f(M) \subseteq N$ is locally injective. Formally, define a restriction on $f$
+\[
+\forall p \in M, \exists \text {open} U \subseteq M, p \in U, \at{f}{U}:U \to N
+\]
+$f$ is locally injective iff
+\[
+\forall \text{open} U \subseteq M, \at{f}{U} \;\text{is injective.}
+\]
+Because, image of the immersion $f(M)$ is not globally injective, it may intersect itself, and its topology may not match $M$. For example, $M = (0,2\pi)$ can be immersed in $\R^2$ through $f:M \to \R^2, \quad f(t) \mapsto (\cos(t),\sin(t))$ as a circle missing one point. $0$ and $2\pi$ are distant from each other in $M$, but they become infinitely close in $f(M)$. Therefore, sequences that diverge in $M$ can converge in $f(M)$, so they are not topologically equivalent.
+
+An embedding is an immersion $f:M \to N$ such that $f$ is globally injective and $f(M) \subseteq N$ is homeomorphic to $M$. Due to these properties, $f(M)$ cannot intersect itself and is topologically equivalent to $M$. 
+
+Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^n$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
+
+
+\subsubsection{Boundaries}
+
+In simplest terms, the boundary of a smooth $n$-manifold $M$ is a smooth $(n-1)$-manifold $\p M$ embedded as its boundary points. In this case, $M$ is a manifold with boundary while $\p M$ is a manifold without boundary. The notation $\p M$ solely refers to the boundary of M and has no connection to partial derivatives. Formally, 
+\[
+\p M := \{p \in M | \; \forall \text{ open } U \subset M \text{ with } p\in U, U \cap \text{int}(M) \neq \varnothing, U \setminus \text{int}(M) \neq \varnothing \} 
+\]
+Where 
+\[
+\text{int}(M) := \{p\in M | \; \exists \text{ open } U \subset M \text{ with } p \in U\} 
+\]
+In essence, the boundary of a manifold is the set of points on the manifold that are not in the interior. 
+
+Boundary manifolds are deeply connected to boundary integrals $\oint$, as they create the region that is integrated over. By defining boundary manifolds, we generalize boundary integration to manifolds, which is crucial when we discuss integration.
+\end{document}
+
