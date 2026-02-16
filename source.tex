@@ -72,7 +72,7 @@ A homeomorphism is a bijective mapping between topological spaces (such as manif
 
 A manifold is an $n$-dimensional structure that is locally homeomorphic to $\R^n$. Each open subset of the manifold has a homeomorphism to a subset of $\R^n$. For example, each hemisphere of the sphere $S^2$ can be mapped to $\R^2$.
 
-Manifolds are important to Exterior Calculus as they serve as the generalization of space. A scalar function $f$ can live on a manifold $M$ by $f:M\to \R$. This is an example of extension from Vector Calculus: $\R^n$ is also a manifold and thus a function input space, but we can now use non-Euclidean input spaces as well. In Vector Calculus, we perform calculus on smooth function. For Exterior Calculus, we need a smooth function defined on a smooth manifold. We will now look into the mathematical construction behind smooth manifolds.
+Manifolds are important to Exterior Calculus as they serve as the generalization of space. A scalar function $f$ can live on a manifold $M$ by $f:M\to \R$. This is an example of extension from Vector Calculus: $\R^n$ is also a manifold and thus a function input space, but we can now use non-Euclidean input spaces as well. In Vector Calculus, we perform calculus on smooth functions. For Exterior Calculus, we need a smooth function defined on a smooth manifold. We will now look into the mathematical construction behind smooth manifolds.
 
 \subsection{Constructing Smooth Manifolds}
 
@@ -222,7 +222,7 @@ Because, image of the immersion $f(M)$ is not globally injective, it may interse
 
 An embedding is an immersion $f:M \to N$ such that $f$ is globally injective and $f(M) \subseteq N$ is homeomorphic to $M$. Due to these properties, $f(M)$ cannot intersect itself and is topologically equivalent to $M$. 
 
-Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^n$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
+Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
 
 
 \subsubsection{Boundaries}
@@ -238,5 +238,19 @@ Where
 In essence, the boundary of a manifold is the set of points on the manifold that are not in the interior. 
 
 Boundary manifolds are deeply connected to boundary integrals $\oint$, as they create the region that is integrated over. By defining boundary manifolds, we generalize boundary integration to manifolds, which is crucial when we discuss integration.
+
+\section{Coordinate Invariance}
+
+Coordinates are used frequently in fields such as vector calculus to describe and quantify change. However, there are infinitely many coordinate systems that can be used to describe a structure such as a vector space or manifold. Coordinate invariance dictates that a certain object encodes the same geometric properties regardless of the coordinate system used to describe it. For example, $(1, 1)$ in Cartesian coordinates represents the same geometric vector as $( \sqrt{2}, \frac{\pi}{2} )$ in polar coordinates.
+
+\subsection{Coordinates as Convenience}
+
+Coordinates are incredibly useful for deriving quantitative information from a geometric system. However, they do not constitute the geometry itself. A sphere, such as the Earth, has intrinsic properties such as distance and curvature. Latitude and longitude are one system used to describe these properties, but spherical coordinates, Cartesian coordinates, or any other smooth coordinate chart can be used to describe them. Regardless of which label is chosen to represent a point or a path, the Earth remains unchanged. Therefore, distance and curvature are coordinate invariant, which is precisely what makes them geometric properties.
+
+This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system. The Earth may still have its geometry, but a pilot would not know how to fly from New York to London without a way to quantify the journey.
+
+\subsection{Tensorial Objects Under Transformation}
+
+
 \end{document}
 
