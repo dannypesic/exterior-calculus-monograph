@@ -249,8 +249,65 @@ Coordinates are incredibly useful for deriving quantitative information from a g
 
 This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system. The Earth may still have its geometry, but a pilot would not know how to fly from New York to London without a way to quantify the journey.
 
-\subsection{Tensorial Objects Under Transformation}
+\subsection{Tensorial Objects Under Coordinate Change}
 
+When coordinates are changed, the numerical components used to describe a geometric object will generally change as well. However, if the object is truly geometric, this change in components must occur in a way that preserves the underlying object itself. This requirement leads to the tensor transformation law.
+
+\subsubsection{Tensor Transformations}
+
+Let $(x^1, \dots, x^n)$ and $(x^{1'}, \dots, x^{n'})$ be two coordinate systems on the same region of a manifold. A vector can be expressed in either coordinate system as
+\[
+V = V^{i}\frac{\p}{\p x^i} = V^{i'}\frac{\p}{\p x^{i'}}
+\]
+where $\frac{\p}{\p x^i}$ and $\frac{\p}{\p x^{i'}}$ are local coordinate vector fields. These coordinate vectors are related by the chain rule
+\[
+\frac{\p}{\p x^j} = \frac{\p x^{i'}}{\p x^j}\frac{\p}{\p x^{i'}}
+\]
+which gives the Jacobian as the core tool to change coordinates. A conceptual way to consider this is that the tangent basis vectors encode first order behavior as shown in Section 2.2.4. Therefore, the Jacobian, a linear map, contains all of the information needed for the vectors to transform, even if the coordinate change is nonlinear. This transformation ensures that the vector itself remains unchanged, even though its numerical description differs. Objects whose components transform according to this type of rule are called tensors, which include scalars, vectors and more. These objects and their properties will be covered in more detail in Section 4.1, along with their generalized transformation law.
+
+\subsubsection{Coordinate Dependent Objects}
+
+A coordinate dependent object is an artifact from the given coordinate system and does not represent the geometry of the overall space. For example, consider the second partial derivative of a function with respect to a particular coordinate. By the chain rule, the first derivative transforms as
+
+\[
+\frac{\partial f}{\partial x^{i'}}
+=
+\frac{\partial x^k}{\partial x^{i'}}
+\frac{\partial f}{\partial x^k}.
+\]
+
+Taking another derivative, we obtain
+
+\[
+\frac{\partial}{\partial x^{j'}} \left( \frac{\partial f}{\partial x^{i'}} \right) = \frac{\partial}{\partial x^{j'}} \left(
+\frac{\partial x^k}{\partial x^{i'}}
+\frac{\partial f}{\partial x^k} \right).
+\]
+
+When evaluated with the product rule, we obtain
+\[
+\frac{\partial^2 f}
+{\partial x^{i'} \partial x^{j'}}
+=
+\frac{\partial x^k}{\partial x^{i'}}
+\frac{\partial x^l}{\partial x^{j'}}
+\frac{\partial^2 f}{\partial x^k \partial x^l}
++
+\frac{\partial^2 x^k}
+{\partial x^{i'} \partial x^{j'}}
+\frac{\partial f}{\partial x^k}
+\]
+
+This result does not obey the tensor transformation law, and contains a coordinate artifact. This means that second partial derivatives, by themselves, do not define intrinsic geometric objects. The underlying issue is that the partial derivative operator
+\[
+\frac{\p}{\p x^i}
+\]
+	
+is tied to the particular coordinate system $x^i$. When the coordinates change, these operators change in a way that reflects the coordinate grid rather than the intrinsic geometry. This is why the second partial derivative is not intrinsically geometric, as it combines the function's intrinsic curvature with the curvature of the coordinate grid.
+
+\subsubsection{Geometric Meaning of the Tensor Transformation Law}
+
+The tensor transformation law provides the precise criterion for distinguishing intrinsic geometric objects from coordinate artifacts. If an object's components transform according to the tensor law, the object exists independently of coordinates and represents an intrinsic geometric quantity. If not, the object depends on the coordinate system and does not represent intrinsic geometry. In this way, tensors form the natural basis of coordinate invariant geometry.
 
 \end{document}
 
