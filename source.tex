@@ -247,7 +247,7 @@ Coordinates are used frequently in fields such as vector calculus to describe an
 
 Coordinates are incredibly useful for deriving quantitative information from a geometric system. However, they do not constitute the geometry itself. A sphere, such as the Earth, has intrinsic properties such as distance and curvature. Latitude and longitude are one system used to describe these properties, but spherical coordinates, Cartesian coordinates, or any other smooth coordinate chart can be used to describe them. Regardless of which label is chosen to represent a point or a path, the Earth remains unchanged. Therefore, distance and curvature are coordinate invariant, which is precisely what makes them geometric properties.
 
-This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system. The Earth may still have its geometry, but a pilot would not know how to fly from New York to London without a way to quantify the journey.
+This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system, which make them useful .
 
 \subsection{Tensorial Objects Under Coordinate Change}
 
@@ -270,32 +270,32 @@ which gives the Jacobian as the core tool to change coordinates. A conceptual wa
 A coordinate dependent object is an artifact from the given coordinate system and does not represent the geometry of the overall space. For example, consider the second partial derivative of a function with respect to a particular coordinate. By the chain rule, the first derivative transforms as
 
 \[
-\frac{\partial f}{\partial x^{i'}}
+\frac{\p f}{\p x^{i'}}
 =
-\frac{\partial x^k}{\partial x^{i'}}
-\frac{\partial f}{\partial x^k}.
+\frac{\p x^k}{\p x^{i'}}
+\frac{\p f}{\p x^k}.
 \]
 
 Taking another derivative, we obtain
 
 \[
-\frac{\partial}{\partial x^{j'}} \left( \frac{\partial f}{\partial x^{i'}} \right) = \frac{\partial}{\partial x^{j'}} \left(
-\frac{\partial x^k}{\partial x^{i'}}
-\frac{\partial f}{\partial x^k} \right).
+\frac{\p}{\p x^{j'}} \left( \frac{\p f}{\p x^{i'}} \right) = \frac{\p}{\p x^{j'}} \left(
+\frac{\p x^k}{\p x^{i'}}
+\frac{\p f}{\p x^k} \right).
 \]
 
 When evaluated with the product rule, we obtain
 \[
-\frac{\partial^2 f}
-{\partial x^{i'} \partial x^{j'}}
+\frac{\p^2 f}
+{\p x^{i'} \p x^{j'}}
 =
-\frac{\partial x^k}{\partial x^{i'}}
-\frac{\partial x^l}{\partial x^{j'}}
-\frac{\partial^2 f}{\partial x^k \partial x^l}
+\frac{\p x^k}{\p x^{i'}}
+\frac{\p x^l}{\p x^{j'}}
+\frac{\p^2 f}{\p x^k \p x^l}
 +
-\frac{\partial^2 x^k}
-{\partial x^{i'} \partial x^{j'}}
-\frac{\partial f}{\partial x^k}
+\frac{\p^2 x^k}
+{\p x^{i'} \p x^{j'}}
+\frac{\p f}{\p x^k}
 \]
 
 This result does not obey the tensor transformation law, and contains a coordinate artifact. This means that second partial derivatives, by themselves, do not define intrinsic geometric objects. The underlying issue is that the partial derivative operator
@@ -308,6 +308,54 @@ is tied to the particular coordinate system $x^i$. When the coordinates change, 
 \subsubsection{Geometric Meaning of the Tensor Transformation Law}
 
 The tensor transformation law provides the precise criterion for distinguishing intrinsic geometric objects from coordinate artifacts. If an object's components transform according to the tensor law, the object exists independently of coordinates and represents an intrinsic geometric quantity. If not, the object depends on the coordinate system and does not represent intrinsic geometry. In this way, tensors form the natural basis of coordinate invariant geometry.
+
+\subsection{The Guiding Principle of Coordinate Invariance}
+
+By prioritizing our analysis on coordinate independent objects, we create a generalized system that allows us to describe the geometry of any given objects without relying on coordinates. While coordinates can be very useful for describing some phenomena, every definition will be given in a coordinate independent manner. This allows us to consider the underlying geometry, which becomes incredibly important as concepts progress. 
+
+\section{Differential Forms}
+
+One primary goal of Exterior Calculus is to create a generalized object that can be integrated and differentiated. A more detailed way to describe this object would be:
+
+\begin{enumerate}
+
+\item When evaluated at a point on $M$, a derivation $v$ will act on this object to produce a scalar value corresponding to both of their properties
+\item When evaluated on a parametrization $\gamma$ on $M$, it returns a scalar value based on each tangent vector that may be summed
+
+For now, let us refer to this object as $\omega$. In other words,
+\[
+\omega (v) \to \R
+\]
+
+\[
+\omega(\gamma(p)) \to \R \implies \int_{\gamma}{\omega} \to \R
+\]
+
+This gives a very simple notion of differentiation and integration on manifolds. However, to truly capture these concepts, $\omega$ must encode a deep, geometric way to analyze change, accumulation, and orientation. This is the primary goal of this text: to explain how $\omega$ is developed into an object that encapsulates the concepts from Vector Calculus while generalizing them in an abstract way.
+
+\subsection{Multilinear Maps and Tensors}
+
+Recall the definition for a linear map between vector spaces $T: V \to W$
+
+\[
+T(au + bv) = aT(v)+bT(u) \quad a,b \in \R, \; u,v \in V.
+\]
+
+A multilinear map is a map 
+\[
+T: V_1 \times \dots \times V_n \to W
+\]
+
+that is linear with respect to each variable. That is, for each variable $u$ in $T$, if all other variables are held constant, $T$ is linear in $u$. For example, the dot product in $\R^n$ is multilinear (specifically, bilinear), as
+\[
+(au + bv) \cdot w = a(u \cdot w) + b(v \cdot w) \text{ and } u \cdot (av + bw) = a(u \cdot v) + b(u \cdot w).
+\]
+
+Multilinear maps are a crucial concept as they allow us to define tensors, which is the fundamental concept that $\omega$ is built upon.
+
+A tensor is a specific type of multilinear map 
+
+\end{enumerate}
 
 \end{document}
 
