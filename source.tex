@@ -5,6 +5,10 @@
 \usepackage{amssymb} 
 \usepackage{geometry}  
 
+\usepackage[style=numeric,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\atlas}{\mathcal{A}}
 \newcommand{\p}{\partial}
@@ -35,18 +39,29 @@ Vector Calculus is a powerful yet limited tool. It allows us to extend the conce
 The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond. 
 \subsection{Limitations of Integral Theorems}
 Consider the three integral theorems of Vector Calculus. These theorems are viewed as the capstone of the field, giving a geometric relation between the ideas of flux, vorticity, boundaries, and integrals.
-\\\\ Green's Theorem:
+\\\\ Green's Theorem
 \[
-\oint_{\p D}{Pdx+Qdy} = \iint_{D}{\left(\vec{\nabla} \times \bv{F}\right) \cdot \uv{k} \cdot dxdy}
+\oint_{\partial D} (P\,dx + Q\,dy)
+=
+\iint_{D}
+\left( (\vec{\nabla} \times \bv{F}) \cdot \uv{k} \right)
+\, dA
 \]
-Stokes' Theorem:
+ Stokes' Theorem
 \[
-\oint _{\p S}{\bv{F}\cdot d\bv{r}} = \iint_{S}{\left(\vec{\nabla} \times \bv{F}\right)\cdot \uv{n}\cdot d\bv{S}}
+\oint_{\partial S} \bv{F} \cdot d\bv{r}
+=
+\iint_{S}
+(\vec{\nabla} \times \bv{F}) \cdot \uv{n}
+\, dS
 \]
-Gauss's Theorem:
-
+Gauss' Theorem
 \[
-\varoiint_{\p V} {\left(\bv{F} \cdot \uv{n} \right)}dS = \iiint_{V}{\left(\vec{\nabla} \cdot \bv{F}\right)dV}
+\oiint_{\partial V}
+(\bv{F} \cdot \uv{n}) \, dS
+=
+\iiint_{V}
+(\vec{\nabla} \cdot \bv{F}) \, dV
 \]
 From the Vector Calculus viewpoint, these theorems each have specific use cases and seem quite different compared to each other; they are only applicable in sub-regions of $\R^3$ with specific kinds of functions. However, one might notice a pattern shared between them: the boundary integral of some function equals the integral of some form of derivative of the function. This can even be seen in the ordinary Fundamental Theorem of Calculus:
 
@@ -386,6 +401,9 @@ y_2
 \]
 
 
+\section {Citations}
+\nocite{*}
+\printbibliography
 
 \end{document}
 
