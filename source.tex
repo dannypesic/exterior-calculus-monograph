@@ -3,19 +3,23 @@
 \usepackage{esint} 
 \usepackage{amsfonts} 
 \usepackage{amssymb} 
-\usepackage{geometry}  
+\usepackage{geometry} 
+\usepackage{mathrsfs}
 
 \usepackage[style=numeric,backend=biber]{biblatex}
 \addbibresource{references.bib}
 
 
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\atlas}{\mathcal{A}}
+\newcommand{\atlas}{\mathscr{A}}
 \newcommand{\p}{\partial}
 \newcommand{\at}[2]{\left. #1 \right|_{#2}}
 \newcommand{\bv}[1]{\mathbf{#1}}
 \newcommand{\uv}[1]{\hat{#1}}
 
+\newcommand{\ihat}{\hat{\imath}}
+\newcommand{\jhat}{\hat{\jmath}}
+\newcommand{\khat}{\hat{k}}
 
 
 
@@ -29,41 +33,49 @@
 \newpage
 \section{Introduction from Vector Calculus}
 \subsection{Vector Calculus Motive}
-Vector Calculus is a powerful yet limited tool. It allows us to extend the concepts from single-variable Calculus to higher dimensional spaces, more complex functions, and different varieties of functions. However, it begins to fail when space becomes non-Euclidean or the functions we attempt to measure rise in complexity and abstraction; when we ask:
+Vector Calculus is a powerful yet limited tool. It allows us to extend the concepts from single-variable Calculus to higher dimensional spaces, more complex functions, and different varieties of functions. However, its methods become inadequate when space is globally non-Euclidean or when the functions we study require a more general framework; when we ask: 
 \begin{itemize}
-    \item How can we analyze a function with a non-Euclidean input space?
-    \item In Vector Calculus, curl is limited to vector fields in $\R^3$. How can we find the vorticity of a higher dimensional vector field?
+    \item How can we analyze a function with a locally Euclidean input space rather than a globally Euclidean one? 
+     \item In Vector Calculus, curl is limited to vector fields in $\R^3$. How can we find the vorticity of a higher dimensional vector field?
     \item How can we analyze functions intrinsically without relying on coordinates?
 \end{itemize}
 
-The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond. 
+The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond. % something else to reference exterior algebra
 \subsection{Limitations of Integral Theorems}
-Consider the three integral theorems of Vector Calculus. These theorems are viewed as the capstone of the field, giving a geometric relation between the ideas of flux, vorticity, boundaries, and integrals.
+Consider the three integral theorems of Vector Calculus. These theorems are viewed as the capstone of the field, giving a geometric relation between the ideas of flux, vorticity, boundaries, and integrals. 
 \\\\ Green's Theorem
 \[
-\oint_{\partial D} (P\,dx + Q\,dy)
-=
-\iint_{D}
-\left( (\vec{\nabla} \times \bv{F}) \cdot \uv{k} \right)
-\, dA
+  \oint_{\partial D} \bigl(P\,dx + Q\,dy\bigr)
+  \;=\;
+  \iint_{D} \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right) dA
 \]
- Stokes' Theorem
+where $D \subset \mathbb{R}^2$ is a simply connected region with positively oriented
+boundary $\partial D$, and $P, Q$ are components of a $C^1$ vector field
+with $P, Q : \mathbb{R}^2 \to \mathbb{R}$.
+\\\\ Stokes' Theorem
 \[
-\oint_{\partial S} \bv{F} \cdot d\bv{r}
-=
-\iint_{S}
-(\vec{\nabla} \times \bv{F}) \cdot \uv{n}
-\, dS
+  \oint_{\partial S} \bv{F} \cdot d\bv{r}
+  \;=\;
+  \iint_{S} \bigl(\vec{\nabla} \times \bv{F}\bigr) \cdot \uv{n} \, dS
 \]
-Gauss' Theorem
+where $S \subset \mathbb{R}^3$ is an oriented piecewise-smooth surface with unit normal
+$\uv{n}$, and $\partial S$ is its boundary curve with orientation induced by $\uv{n}$.
+$\bv{F} = \langle P, Q, R \rangle : \mathbb{R}^3 \to \mathbb{R}^3$ is a $C^1$
+vector field, and $d\bv{r}$ is the tangent vector element along $\partial S$.
+\\\\ Gauss' Divergence Theorem 
+
 \[
-\oiint_{\partial V}
-(\bv{F} \cdot \uv{n}) \, dS
-=
-\iiint_{V}
-(\vec{\nabla} \cdot \bv{F}) \, dV
+  \oiint_{\partial V} \bigl(\bv{F} \cdot \uv{n}\bigr) \, dS
+  \;=\;
+  \iiint_{V} \bigl(\vec{\nabla} \cdot \bv{F}\bigr) \, dV
 \]
-From the Vector Calculus viewpoint, these theorems each have specific use cases and seem quite different compared to each other; they are only applicable in sub-regions of $\R^3$ with specific kinds of functions. However, one might notice a pattern shared between them: the boundary integral of some function equals the integral of some form of derivative of the function. This can even be seen in the ordinary Fundamental Theorem of Calculus:
+where $V \subset \mathbb{R}^3$ is a bounded solid region, $\partial V$ is its
+closed boundary surface with outward-pointing unit normal $\uv{n}$,
+and $\bv{F} = \langle P, Q, R \rangle : \mathbb{R}^3 \to \mathbb{R}^3$ is a $C^1$
+vector field.
+\bigskip
+
+From the Vector Calculus viewpoint, these theorems each have specific use cases and seem quite different compared to each other; they are only applicable in sub-regions of $\R^3$ with specific kinds of functions. However, one might notice a pattern shared between them: the integral of a function over a region's boundary equals the integral of function's derivative over a region. This can even be seen in the ordinary Fundamental Theorem of Calculus:
 
 \[
 f(b)-f(a) = \int_{[a,b]}{\frac{df}{dx}dx} \iff\int_{\p[a,b]}{f} =\int_{[a,b]}{\frac{df}{dx}dx}
@@ -74,7 +86,7 @@ This pattern is not simply coincidental, as we will soon discover how these four
 \subsection{Roadmap}
 Exterior Calculus provides a unified framework that expands the concepts of Vector Calculus through extension, generalization, and unification.
 \subsubsection{Extension}
-Vector Calculus handles derivatives and integrals on $\R^3$. Exterior Calculus extends these concepts to arbitrary dimensions spaces known as manifolds that are locally Euclidean but have complex global behavior. 
+Vector Calculus handles derivatives and integrals in $\R^n$. Exterior Calculus extends these concepts to arbitrary dimensions spaces known as manifolds that are locally look like $\R^n$ but may have non-Euclidean behavior globally.
 \subsubsection{Generalization}
 The derivative in Exterior Calculus, the exterior derivative, generalizes gradient, curl, and divergence into one operator. Similarly, integration over manifolds generalizes line, surface, and volume integrals in a dimension-independent manner. 
 \subsubsection{Unification}
@@ -85,9 +97,9 @@ These functions of Exterior Calculus are precisely what make it such a powerful 
 
 \section{Manifolds}
 
-A manifold is an $n$-dimensional structure that is locally homeomorphic to $\R^n$. This essentially means that a manifold can be split into a number of regions that can each be mapped to a region of $\R^n$ in a way that preserves its local topological structure. For example, each hemisphere of the sphere $S^2$ can be mapped to $\R^2$ and mapped back while preserving the structure.
+A manifold is an $n$-dimensional structure that is locally Euclidean, i.e., locally homeomorpic to $\R^n$. This means that a manifold can be split into a number of regions that can each be mapped to a region of $\R^n$ and back in a way that preserves its local topological structure. For example, each hemisphere of the sphere $S^2$ can be mapped to $\R^2$ and mapped back while preserving its structure. 
 
-Manifolds are important to Exterior Calculus as they serve as the generalization of space. A scalar function $f$ can exist on a manifold $M$ by $f:M\to \R$. This is an example of extension from Vector Calculus: $\R^n$ is also a manifold and thus a function input space, but non-Euclidean input spaces can be used in addition. In Vector Calculus, we perform calculus on smooth functions. For Exterior Calculus, we need a smooth function defined on a smooth manifold. We will now look into the mathematical construction behind smooth manifolds.
+Manifolds generalize the notion of space in Exterior Calculus. The primary difference is that manifolds need not be globally Euclidean, only locally Euclidean. Subsets of $\R^n$ are manifolds as well, but globally non-Euclidean manifolds are the cases which separate their techniques from Vector Calculus, so we will focus on them. For Exterior Calculus to work, both functions and manifolds must be smooth; we now examine what that smoothness condition requires of manifolds.
 
 \subsection{Constructing Smooth Manifolds}
 
@@ -97,37 +109,45 @@ A manifold is, at its core, a space that looks locally like ordinary Euclidean s
 In Exterior Calculus, we require the smooth structure so that differentiation is globally well defined. The full technical construction of smooth manifolds is provided in APPENDIX.
 
 \subsubsection{Coordinate Charts}
-The core parts of a manifold that define its geometric relation to Euclidean space are the coordinate charts. These are precisely what defines the locally Euclidean characteristic of manifolds, which gives the basis for analysis. 
+The core parts of a manifold $M$ that define its geometric relation to Euclidean space are the coordinate charts. These are precisely what defines the locally Euclidean characteristic of manifolds, which gives the basis for analysis. 
 
-Around every point in $M$, there exists a neighborhood $U$ that can be assigned coordinates $(x^1,x^2, \dots, x^n)$ just like a region of $\R^n$. These coordinates give a way to label points in the neighborhood and map them to $\R^n$ while preserving the geometric structure. The coordinate functions $x^i:U\to \R$ give a method of labeling points in the neighborhood; however, it is an important distinction that coordinates are not directly connected to the geometric structure of the manifold. This will be covered in Section 3. 
+Around every point in $M$, there exists a neighborhood $U$ that can be assigned coordinates $(x^1,x^2, \dots, x^n)$ just like a region of $\R^n$. These coordinates give a way to label points in the neighborhood and map them to $\R^n$ while preserving the geometric structure. The coordinate functions $x^i:U\to \R$ give a method of labeling points in the neighborhood; however, it is an important distinction that coordinates are not directly connected to the geometric structure of the manifold. This will be covered in Section 3. The coordinate chart is defined by $(\phi, U)$ where $\phi$ is the map from $M$ to $\R^n$ via the coordinate functions.
 
 However, coordinate charts alone are not enough to describe the full differentiable structure of a manifold. They do not let us understand the structure of differentiability that lies between the charts.
 
 \subsubsection{Transition Maps}
-When two coordinate neighborhoods overlap, there must be a way to translate coordinates from one chart to the other. These coordinate translations are called transition maps. They ensure that the transition between the two charts is fully smooth by creating a map that retains the geometric information from the charts. If this mapping is smooth, it ensures that derivatives in one chart correspond to derivatives in the other. This allows smoothness to become an intrinsic property of the manifold rather than depending on a chart.
+When two coordinate neighborhoods overlap, there must be a way to translate coordinates from one chart to the other. These coordinate translations are called transition maps. They ensure that the transition between the two charts is fully smooth by creating a map that retains the geometric information from the charts. A transition map between two charts $(\phi, U)$ and $(\psi, V)$ is defined by 
+\[
+ \psi \circ \phi^{-1}: \phi(U \cap V) \to \psi(U \cap V)
+\].
+Since both $\phi(U \cap V)$ and $\psi(U \cap V)$ are subsets of $\R^n$, smoothness of the transition map is well defined. If the mapping is smooth, it ensures that derivatives in one chart correspond to derivatives in the other. Therefore, the two charts are smoothly compatible with each other. This allows smoothness to become an intrinsic property of the manifold rather than depending on a chart.
 
+It is an important note that if $U \cap V = \varnothing$, the differentiability condition becomes vacuously true. 
 
 \subsubsection{Atlases}
-An atlas $\atlas$ is defined as a collection of charts on $M$ that cover the entire manifold. When every possible coordinate chart has a smooth transition map with every other chart, the atlas creates a smooth structure on the space. This is called a maximal smooth atlas, and it describes the structure of the entire manifold.
+
+A smooth atlas is defined as a collection of charts on $M$ that cover the entire manifold. If an atlas is smooth, then the collection $\atlas$ of all charts smoothly compatible with each member of the atlas is both maximal and smooth. Therefore, $\atlas$ is a maximal smooth atlas. The proof for this can be viewed in APPENDIX. The maximal smooth atlas creates a smooth structure on $M$ and describes its topology in relation to $\R^n$.
 
 \subsubsection{Smooth Manifolds}
 
-A smooth manifold $M$ is defined as a set of points combined with a maximal smooth atlas $\atlas$. Since smooth manifolds are ubiquitous in Exterior Calculus, we will simply use the term "manifold" to refer to one. With this definition, we can extend the idea of space to include all manifolds rather than solely $\R^n$. By defining a smooth manifold, smooth functions can be defined beyond $\R^n$ and behave well under analysis. However, this generalization raises more questions than it answers. If manifolds only resemble Euclidean space locally, how can we define derivatives in a way that does not depend on a particular coordinate system?
+A smooth manifold $M$ is defined as a set of points combined with a maximal smooth atlas $\atlas$. Since smooth manifolds are ubiquitous in Exterior Calculus, we will simply use the term ``manifold'' to refer to one, with ``atlas'' used to refer to its maximal smooth atlas. With this definition, we can extend the idea of space to include all manifolds beyond $\R^n$. By defining a smooth manifold, smooth functions can be defined beyond $\R^n$ and behave well under analysis. 
+
+With our generalized notion of space, we now work to define principles of calculus. Since manifolds only resemble Euclidean space locally, we must define derivatives in a way that does not depend on a particular coordinate system.
 
 \subsection{Tangent Vectors as Derivations}
 In Vector Calculus, the directional derivative finds the derivative of a scalar function on a particular vector. In Exterior Calculus, we can define abstract vectors (that is, vectors not defined in coordinates) that are tangent to a manifold and act as a derivative operator, a derivation.
 \subsubsection{Local Coordinate Vector Fields}
-In $\R^n$, the global coordinates induce a global coordinate vector field. For example, in $\R^3$, the coordinates $(x,y,z)$ induce $\uv{i}, \uv{j}, \uv{k}$.
+In $\R^n$, the global coordinates induce a global coordinate vector field. For example, in $\R^3$, the coordinates $(x,y,z)$ induce $\ihat, \jhat, \khat$.
 
 Since a smooth manifold does not have a global coordinate chart, the coordinate vector fields must be expressed locally. Take a point $p$. The coordinate chart
 \[
 (U,\varphi), \quad \varphi = (x^1,x^2, \dots, x^n), \quad p\in U
 \]
-induces the local coordinate vector fields $\frac{\p}{\p x^1}, \frac{\p}{\p x^2},\dots \frac{\p}{\p x^n}$ on $U$. These vectors point in the direction of their corresponding coordinate. This notation of expressing coordinate vectors as partial derivative operators will be explained in Section 2.2.3. For now, treat it purely as notation.
+induces the local coordinate vector fields $\frac{\p}{\p x^1}, \frac{\p}{\p x^2},\dots \frac{\p}{\p x^n}$ on $U$. These vectors point in the direction of their corresponding coordinate. This notation of expressing coordinate vectors as partial derivative operators will be explained in Section 2.2.3. % Gabe will review notation
 \subsubsection{Tangent Vectors}
 A tangent vector on a manifold is a vector attached at a specific point $p$ such that it is tangent to the surface of the manifold. In coordinates, a tangent vector is a linear combination of the local coordinate vector fields. However, we will define a more geometric definition for abstract tangent vectors that does not rely on an arbitrary coordinate chart.
 
-Choose a smooth parametric curve on an embedded manifold $\gamma:I \subseteq \R \to M$ such that $\gamma(0)=p$. A vector $v$ is a tangent vector at $p$ iff $\dot{\gamma}(0) = v$. An important distinction is that the derivative of a curve on a manifold is only predefined when the manifold can be embedded in $\R^n$. We can choose a more abstract definition using derivations. 
+Choose a smooth parametric curve on an embedded manifold $\gamma:I \subseteq \R \to M$ such that $\gamma(0)=p$. A vector $v$ is a tangent vector at $p$ if and only if $\gamma'(0) = v$. An important distinction is that the derivative of a curve on a manifold is only predefined when the manifold can be embedded in $\R^n$. We can choose a more abstract definition using derivations. 
 
 \subsubsection{Derivations}
 A derivation is a differential operator that computes directional derivatives along an abstract tangent vector. The tangent vector is not an input to a derivation, but the operator itself. Specifically, a tangent vector is a derivation $v:C^{\infty}{(M)} \to \R$.
@@ -145,6 +165,12 @@ The numerical value of the derivation applied to a function is:
 \[
 v^i\at{\frac{\p f}{\p x^i}}{p} 
 \]
+The use of partial derivative operators as local coordinate vectors gives a natural way to encode this concept. It causes the derivation to act like a directional derivative, similarly to the Euclidean directional derivative:
+\[
+\bv{v} \cdot \at{\nabla f}{p} = v^i \at{\frac{\p f}{\p x^i}}{p}
+\]
+Having partial derivative operators as the tangent vector basis lets the tangent vector fundamentally act as a derivation without connecting it to an external operator such as $\nabla$.
+
 Another way to represent the derivation on a function is through the abstract definition with parametric curves:
 \[
 v(f)=\frac{d}{dt}\at{f(\gamma(t))}{t=0}
@@ -175,64 +201,77 @@ If both $f$ and $g$ are 0 at a point $p$, the derivative in every direction must
  While tangent vectors are useful as derivations, we can group them into ordered structures to help us better understand a manifold.
 
 \subsubsection{Tangent Spaces}
-The set of all tangent vectors at a point $p$ is called the tangent space $T_pM$. Since, in coordinates, every tangent vector at a point is a linear combination of its local coordinate vectors $\frac{\p}{\p x^1},\frac{\p}{\p x^2}...\frac{\p}{\p x^n} $, the local coordinate vectors form a basis for $T_pM$ with respect to a local chart. Every tangent vector $v$ at $p$ satisfies $v \in T_pM$. 
+The set of all tangent vectors at a point $p$ is called the tangent space $T_pM$. Since, in coordinates, every tangent vector at a point is a linear combination of its local coordinate vectors $\frac{\p}{\p x^1},\frac{\p}{\p x^2}...\frac{\p}{\p x^n} $, the local coordinate vectors form a basis for $T_pM$ with respect to a local chart. Every tangent vector $v$ at $p$ satisfies $v \in T_pM$.
 
-On an $n$-manifold, $T_pM$ is an $n$-dimensional vector space analogous to $\R^n$
+On an $n$-manifold, $T_pM$ is an $n$-dimensional vector space isomorphic to $\R^n$
 
 \subsubsection{Tangent Bundles}
 The tangent bundle $TM$ is the set of all tangent vectors on a manifold. It is defined by: \[
 TM :=\bigsqcup_{p\in M}{T_pM}
 \]
-The disjoint union forces each vector to be paired with its origin point. Thus, it can also be defined as:
+The disjoin union $\sqcup$ is defined to pair each vector with its origin point, functioning as:
 \[
-TM := \bigcup_{p\in M}{\{p\} \times T_pM}
+\bigsqcup_{p\in M}{T_pM} = \bigcup_{p\in M}{\{p\} \times T_pM}
 \]
 Therefore, each element of $TM$ takes the form $(p,v)$. This allows us to create a projection map:
 \[
 \pi:TM \to M \quad(p,v) \mapsto p
 \]
-A tangent vector fiber over a point $p$ in $M$ is $\pi^{-1}(p)$, which gives $T_pM$. This allows us to create global mappings and assignments over the manifold.
+Rather than working with each $T_pM$ in isolation, assembling them into $TM$ creates a global structure over $M$. The projection $\pi$ assigns every vector in $TM$ to its base point while $\pi^{-1}(p) \cong T_pM$ recovers the vector fiber over $p$. 
+
+Specifically, $\pi^{-1}$ maps $p$ to the set $\{(p,v) : v \in T_pM\}$ which is naturally isomorphic to $T_pM$, giving a way to obtain the tangent space from a point. Additionally, since both tangent spaces are isomorphic to $\R^n$, the labeling inherited from the disjoint union ensures that for $p \neq q, T_pM \neq T_qM$. Labeling each vector with its base point ensures that global mappings and assignments can exist where each point has a unique tangent space. 
+
 \subsubsection{Vector Fields}
 A vector field, that is, a section of the tangent bundle, assigns a tangent vector to each point on a manifold: 
 \[
 \bv{X}:M\to TM
 \]
-It must satisfy $\pi \circ \bv{X} = \text{id}_M$, where $\text{id}_M$ is the identity map on the manifold. Intuitively, this ensures that vectors are assigned correctly.
-At a point, the vector field satisfies $\bv{X}(p)= v\in T_pM$. Defining the tangent bundle and projection map helps us create a simple definition for tangent vector fields on a manifold.
+It must satisfy $\pi \circ \bv{X} = \text{id}_M$, where $\text{id}_M$ is the identity map on the manifold. This ensures that vectors are correctly assigned, as the vector field must satisfy $\bv{X}(p)= v\in T_pM$ for all $p \in M$. This uniqueness allows for the assignments to represent geometric quantities, as a vector $\bv{X}(p)$ will not belong to the tangent space of another point.
 
 \subsection{Submanifolds and Boundaries}
 The final parts of manifolds we must mention are submanifolds and boundaries. These are imperative to define future notions of integration.
 
 \subsubsection{Submanifolds}
 
-Given two manifolds $M$ and $N$, $M$ is a submanifold of $N$ iff $M \subseteq N$. For example, the sphere $S^2$ is a submanifold of $\R^3$ as $S^2 \subset \R^3$. Submanifolds give us a generalized way to define regions for integration. For example, the region $[0,1] \times [0,1]$ can be expressed as a submanifold of $\R^2$. 
+Given two manifolds $M$ and $N$, $M$ is a submanifold of $N$ if and only if $M \subseteq N$. For example, the sphere $S^2$ is a submanifold of $\R^3$ as $S^2 \subset \R^3$. Submanifolds give us a generalized way to define regions for integration. For example, the region $[0,1] \times [0,1]$ can be expressed as a submanifold of $\R^2$. 
 
 There are also two more structured types of submanifolds: immersions and embeddings. 
 
-An immersion is a smooth map between manifolds $f:M \to N$ such that the image $f(M) \subseteq N$ is locally injective. Because the image of the immersion $f(M)$ is not globally injective, it may intersect itself, and its topology may not match $M$. For example, $M = (0,2\pi)$ can be immersed in $\R^2$ through $f:M \to \R^2, \quad f(t) \mapsto (\cos(t),\sin(t))$ as a circle missing one point. $0$ and $2\pi$ are distant from each other in $M$, but they become infinitely close in $f(M)$. Therefore, sequences that diverge in $M$ can converge in $f(M)$, so they are not topologically equivalent.
+An immersion is a smooth map between manifolds $f:M \to N$ such that the image $f(M) \subseteq N$ is locally injective. 
+$f$ is locally injective if and only if for every open subset $U$ of $M$, $\at{f}{U}$ is injective. 
+Because the image of the immersion $f(M)$ is not globally injective, it may intersect itself, and its topology may not match $M$. For example, $M = (0,2\pi)$ can be immersed in $\R^2$ through $f:M \to \R^2, \quad f(t) \mapsto (\cos(t),\sin(t))$ as a circle missing one point. $0$ and $2\pi$ are distant from each other in $M$, but they become infinitely close in $f(M)$. Therefore, sequences that diverge in $M$ can converge in $f(M)$, so they are not topologically equivalent.
 
-An embedding is an immersion $f:M \to N$ such that $f$ is globally injective and $f(M) \subseteq N$ is homeomorphic to $M$. Due to these properties, $f(M)$ cannot intersect itself and is topologically equivalent to $M$. 
+An embedding is an immersion $f:M \to N$ such that $f$ is globally injective and $f(M) \subseteq N$ is homeomorphic to $M$. Due to these properties, $f(M)$ cannot intersect itself and is topologically equivalent to $M$.
 
-Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
-
+APPENDIX covers more on how manifolds can be immersed or embedded in Euclidean space.
 
 \subsubsection{Boundaries}
 
-In simplest terms, the boundary of a smooth $n$-manifold $M$ is a smooth $(n-1)$-manifold $\p M$ embedded as its boundary points. In this case, $M$ is a manifold with boundary while $\p M$ is a manifold without boundary. The notation $\p M$ solely refers to the boundary of M and has no connection to partial derivatives. In essence, the boundary of a manifold is the set of points on the manifold that are not in the interior. 
+In simplest terms, the boundary of a smooth $n$-manifold $M$ is a smooth $(n-1)$-manifold $\p M$ embedded as its boundary points. In this case, $M$ is a manifold with boundary while $\p M$ is a manifold without boundary. The notation $\p M$ refers to the boundary of M. In essence, the boundary of a manifold is the set of points on the manifold that are not in the interior.
 
-Boundary manifolds are deeply connected to boundary integrals $\oint$, as they create the region that is integrated over. By defining boundary manifolds, we generalize boundary integration to manifolds, which is crucial when we discuss integration.
+ Formally, the interior of $M$, $\text{int}(M)$, is defined as the set of points contained in an open subset of $M$. The boundary of $M$ is the set of all points contained within open subsets $p \in U \subset M$ such that:
+ \[
+U \cap \text{int}(M) \neq \varnothing
+ \]
+ \[
+ U \setminus \text{int}(M) \neq \varnothing
+ \]
+
+In essence, the boundary of a manifold is the set of points on the manifold that are not in the interior. 
+
+Boundary manifolds are deeply connected to boundary integrals, as they create the region that is integrated over. By defining boundary manifolds, we generalize boundary integration to manifolds, which is crucial when we discuss integration.
 
 \section{Coordinate Invariance}
 
-Coordinates are used frequently in fields such as vector calculus to describe and quantify change. However, there are infinitely many coordinate systems that can be used to describe a structure such as a vector space or manifold. Coordinate invariance dictates that a certain object encodes the same geometric properties regardless of the coordinate system used to describe it. For example, $(1, 1)$ in Cartesian coordinates represents the same geometric vector as $( \sqrt{2}, \frac{\pi}{2} )$ in polar coordinates.
+Coordinates are used frequently in fields such as Vector Calculus to describe and quantify change. However, there are infinitely many coordinate systems that can be used to describe a structure such as a vector space or manifold. Coordinate invariance dictates that a certain object encodes the same geometric properties regardless of the coordinate system used to describe it. For example, $(1, 1)$ in Cartesian coordinates represents the same geometric vector as $( \sqrt{2}, \frac{\pi}{2} )$ in polar coordinates.
 
 \subsection{Coordinates as Convenience}
 
 Coordinates are incredibly useful for deriving quantitative information from a geometric system. However, they do not constitute the geometry itself. A sphere, such as the Earth, has intrinsic properties such as distance and curvature. Latitude and longitude are one system used to describe these properties, but spherical coordinates, Cartesian coordinates, or any other smooth coordinate chart can be used to describe them. Regardless of which label is chosen to represent a point or a path, the Earth remains unchanged. Therefore, distance and curvature are coordinate invariant, which is precisely what makes them geometric properties.
 
-This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system, which make them useful .
+This does not mean that coordinates are meaningless, however. They are auxiliary tools used to describe a geometric system.
 
-\subsection{Tensorial Objects Under Coordinate Change}
+\subsection{Objects Under Coordinate Change}
 
 When coordinates are changed, the numerical components used to describe a geometric object will generally change as well. However, if the object is truly geometric, this change in components must occur in a way that preserves the underlying object itself. This requirement leads to the tensor transformation law.
 
@@ -246,9 +285,112 @@ where $\frac{\p}{\p x^i}$ and $\frac{\p}{\p x^{i'}}$ are local coordinate vector
 \[
 \frac{\p}{\p x^j} = \frac{\p x^{i'}}{\p x^j}\frac{\p}{\p x^{i'}}
 \]
-which gives the Jacobian as the core tool to change coordinates. A conceptual way to consider this is that the tangent basis vectors encode first order behavior as shown in Section 2.2.4. Therefore, the Jacobian, a linear map, contains all of the information needed for the vectors to transform, even if the coordinate change is nonlinear. This transformation ensures that the vector itself remains unchanged, even though its numerical description differs. Objects whose components transform according to this type of rule are called tensors, which include scalars, vectors and more. These objects and their properties will be covered in more detail in Section 4.1, along with their generalized transformation law.
+which gives the Jacobian as the core tool to change coordinates. A conceptual way to consider this is that the tangent basis vectors encode first order behavior as shown in Section 2.2.4. Therefore, the Jacobian, a linear map, contains all of the information needed for the vectors to transform, even if the coordinate change is nonlinear. This transformation ensures that the vector itself remains unchanged, even though its numerical description differs. Objects whose components transform according to this type of rule are called tensors, which include scalars, vectors and more. These objects and their properties will be covered in more detail in Section 4.1.
 
-\subsubsection{Coordinate Dependent Objects}
+\subsubsection{Geometric Meaning of the Tensor Transformation Law}
+
+The tensor transformation law provides the precise criterion for distinguishing intrinsic geometric objects from coordinate artifacts. If an object's components transform according to the tensor law, the object exists independently of coordinates and represents an intrinsic geometric quantity. If not, the object depends on the coordinate system and does not represent intrinsic geometry. In this way, tensors form the natural basis of coordinate invariant geometry.
+
+Some objects contain artifacts of the particular coordinate system they are defined in and are referred to as coordinate dependent objects. These are covered more in APPENDIX.
+
+\subsection{The Guiding Principle of Coordinate Invariance}
+
+By prioritizing our analysis on coordinate independent objects, we create a generalized system that allows us to describe the geometry of any given objects without relying on coordinates. While coordinates can be very useful for describing some phenomena, every definition will be given in a coordinate independent manner. This allows us to consider the underlying geometry, which becomes incredibly important as concepts progress. 
+
+\section{Differential Forms}
+
+One primary goal of Exterior Calculus is to create a generalized object on manifolds that can be integrated. This object is called a differential form. When integrated on a parameterization, the differential form evaluates each infinitesimal tangent vector according to its own weighting mechanism and returns a scalar value. On higher dimensional parameterizations, a differential form evaluates each infinitesimal parallelepiped spanned by tangent vectors, then sums them according to its weights into a scalar. This acts similarly to integration in $\R^n$, but works with tangent vectors on manifolds. 
+
+To truly capture this aspect of integration, differential forms must encode a deep, geometric way to analyze change, accumulation, and orientation. This naturally generalizes the objects of Vector Calculus to manifolds beyond $\R^n$. This is the primary goal of this text: to explain how differential forms are developed into objects that encapsulate these properties.
+
+\subsection{Multilinear Maps and Tensors}
+
+\subsubsection{Multilinear Maps}
+
+Recall the definition for a linear map between vector spaces $T: V \to W$
+
+\[
+T(au + bv) = aT(v)+bT(u) \quad a,b \in \R, \; u,v \in V.
+\]
+
+A multilinear map is a map 
+\[
+T: V_1 \times \dots \times V_n \to W
+\]
+
+that is linear with respect to each variable. That is, for each variable $u$ in $T$, if all other variables are held constant, $T$ is linear in $u$. For example, the dot product in $\R^n$ is multilinear (specifically bilinear), as
+\[
+(au + bv) \cdot w = a(u \cdot w) + b(v \cdot w) \text{ and } u \cdot (av + bw) = a(u \cdot v) + b(u \cdot w).
+\]
+
+Multilinear maps are a crucial concept as they allow us to define tensors, which is the fundamental concept that differential forms are built upon.
+
+\subsubsection{Covectors}
+
+Before discussing tensors, we must mention covectors. Given a vector space $V$, its dual space $V^*$ is the set of all linear mappings 
+\[
+c: V \to \R.
+\]
+Each element $c$ is a covector. 
+
+This formal definition of a covectors is helpful as they are used extensively. For example, the inner product of two vectors represented as $v^T u$ simply means
+\[
+v^T u = \text{the dual of }v \text{ (}v^T\text{) applied to u, which results in a scalar value.}
+\]
+
+Therefore, a covector is simply an object that linearly maps a vector to a real number.
+
+\subsubsection{Tensors}
+A tensor is a specific type of multilinear map that maps covectors and vectors to a scalar value.
+\[
+T: V^*_1 \times \dots \times V^*_p \times V_1 \times \dots \times V_q \to \R.
+\]
+
+This is specifically referred to as a type $(p,q)$ tensor.
+
+For example, a covector linearly maps one vector to a real number. Therefore, it is a $(0,1)$ tensor via
+\[
+T: V_1 \to \R.
+\]
+A vector linearly maps one covector to a real number. Therefore, it is a $(1,0)$ tensor
+\[
+T: V^*_1 \to \R.
+\]
+The dot product bilinearly maps two vectors to a real number. Therefore, it is a $(0,2)$ tensor
+\[
+T:V_1 \times V_2 \to \R.
+\]
+All of these geometric objects have a representation as a multilinear map. This is the abstract form of a tensor. The coordinate representation can be obtained by applying the tensor to basis elements. For example, in $\R^2$, the dot product of vectors $x$ and $y$ with basis ${\ihat, \jhat}$ can be represented by
+\[
+T(x_1 \ihat +x_2 \jhat, y_1 \ihat +y_2 \jhat).
+\]
+This can be expressed as a matrix
+\[
+\begin{bmatrix} 
+T(\ihat, \ihat), T(\ihat, \jhat) \\
+T(\jhat, \ihat), T(\jhat, \jhat)
+\end{bmatrix}.
+\]
+Therefore, the dot product can be expressed as
+\[
+\begin{pmatrix}
+x_1 & x_2
+\end{pmatrix}
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+\begin{pmatrix}
+y_1 \\
+y_2
+\end{pmatrix}
+\]
+
+
+\section{Appendix}
+
+Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
+
 
 A coordinate dependent object is an artifact from the given coordinate system and does not represent the geometry of the overall space. For example, consider the second partial derivative of a function with respect to a particular coordinate. By the chain rule, the first derivative transforms as
 
@@ -287,118 +429,6 @@ This result does not obey the tensor transformation law, and contains a coordina
 \]
 	
 is tied to the particular coordinate system $x^i$. When the coordinates change, these operators change in a way that reflects the coordinate grid rather than the intrinsic geometry. This is why the second partial derivative is not intrinsically geometric, as it combines the function's intrinsic curvature with the curvature of the coordinate grid.
-
-\subsubsection{Geometric Meaning of the Tensor Transformation Law}
-
-The tensor transformation law provides the precise criterion for distinguishing intrinsic geometric objects from coordinate artifacts. If an object's components transform according to the tensor law, the object exists independently of coordinates and represents an intrinsic geometric quantity. If not, the object depends on the coordinate system and does not represent intrinsic geometry. In this way, tensors form the natural basis of coordinate invariant geometry.
-
-\subsection{The Guiding Principle of Coordinate Invariance}
-
-By prioritizing our analysis on coordinate independent objects, we create a generalized system that allows us to describe the geometry of any given objects without relying on coordinates. While coordinates can be very useful for describing some phenomena, every definition will be given in a coordinate independent manner. This allows us to consider the underlying geometry, which becomes incredibly important as concepts progress. 
-
-\section{Differential Forms}
-
-One primary goal of Exterior Calculus is to create a generalized object that can be integrated and differentiated. A more detailed way to describe this object would be:
-
-\begin{enumerate}
-
-\item When evaluated at a point on $M$, a derivation $v$ will act on this object to produce a scalar value corresponding to both of their properties
-\item When evaluated on a parametrization $\gamma$ on $M$, it returns a scalar value based on each tangent vector that may be summed
-\end{enumerate}
-
-For now, let us refer to this object as $\omega$. In other words,
-\[
-\omega (v) \to \R
-\]
-
-\[
-\omega(\gamma(p)) \to \R \implies \int_{\gamma}{\omega} \to \R
-\]
-
-This gives a very simple notion of differentiation and integration on manifolds. However, to truly capture these concepts, $\omega$ must encode a deep, geometric way to analyze change, accumulation, and orientation. This is the primary goal of this text: to explain how $\omega$ is developed into an object that encapsulates the concepts from Vector Calculus while generalizing them in an abstract way.
-
-\subsection{Multilinear Maps and Tensors}
-
-\subsubsection{Multilinear Maps}
-
-Recall the definition for a linear map between vector spaces $T: V \to W$
-
-\[
-T(au + bv) = aT(v)+bT(u) \quad a,b \in \R, \; u,v \in V.
-\]
-
-A multilinear map is a map 
-\[
-T: V_1 \times \dots \times V_n \to W
-\]
-
-that is linear with respect to each variable. That is, for each variable $u$ in $T$, if all other variables are held constant, $T$ is linear in $u$. For example, the dot product in $\R^n$ is multilinear (specifically, bilinear), as
-\[
-(au + bv) \cdot w = a(u \cdot w) + b(v \cdot w) \text{ and } u \cdot (av + bw) = a(u \cdot v) + b(u \cdot w).
-\]
-
-Multilinear maps are a crucial concept as they allow us to define tensors, which is the fundamental concept that $\omega$ is built upon.
-
-\subsubsection{Covectors}
-
-Before discussing tensors, we must mention covectors. Given a vector space $V$, its dual space $V^*$ is the set of all linear mappings 
-\[
-c: V \to \R.
-\]
-Each element $c$ is a covector. 
-
-This formal definition of a covectors is helpful as they are used extensively. For example, the inner product of two vectors represented as $v^T u$ simply means
-\[
-v^T u = \text{the dual of }v \text{ (}v^T\text{) applied to u," which results in a scalar value.}
-\]
-
-Therefore, a covector is simply an object that linearly maps a vector to a real number.
-
-\subsubsection{Tensors}
-A tensor is a specific type of multilinear map that maps covectors and vectors to a scalar value.
-\[
-T: V^*_1 \times \dots \times V^*_p \times V_1 \times \dots \times V_q \to \R.
-\]
-
-This is specifically referred to as a type $(p,q)$ tensor.
-
-For example, a covector is a $(0,1)$ tensor via
-\[
-T: V_1 \to \R.
-\]
-A vector is a $(1,0)$ tensor
-\[
-T: V^*_1 \to \R.
-\]
-The dot product is a $(0,2)$ tensor
-\[
-T:V_1 \times V_2 \to \R.
-\]
-All of these geometric objects have a representation as a multilinear map. This is the abstract form of a tensor. The coordinate representation can be obtained by applying the tensor to basis elements. For example, the dot product of vectors $x$ and $y$ with basis ${e_1, e_2}$ can be represented by
-\[
-T(x_1 e_1+x_2 e_2, y_1 e_1+y_2 e_2).
-\]
-This can be expressed as a matrix
-\[
-\begin{bmatrix} 
-T(e_1, e_1), T(e_1, e_2) \\
-T(e_2, e_1), T(e_1, e_2)
-\end{bmatrix}.
-\]
-Therefore, the dot product can be expressed as
-\[
-\begin{pmatrix}
-x_1 & x_2
-\end{pmatrix}
-\begin{pmatrix}
-1 & 0 \\
-0 & 1
-\end{pmatrix}
-\begin{pmatrix}
-y_1 \\
-y_2
-\end{pmatrix}
-\]
 
 
 \section {Citations}
