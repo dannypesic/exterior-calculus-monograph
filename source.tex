@@ -299,9 +299,9 @@ By prioritizing our analysis on coordinate independent objects, we create a gene
 
 \section{Differential Forms}
 
-One primary goal of Exterior Calculus is to create a generalized object on manifolds that can be integrated. This object is called a differential form. When integrated on a parameterization, the differential form evaluates each infinitesimal tangent vector according to its own weighting mechanism and returns a scalar value. On higher dimensional parameterizations, a differential form evaluates each infinitesimal parallelepiped spanned by tangent vectors, then sums them according to its weights into a scalar. This acts similarly to integration in $\R^n$, but works with tangent vectors on manifolds. 
+One primary goal of Exterior Calculus is to create a generalized object on manifolds that can be integrated. This object is called a differential form. When integrated on a parameterization, the differential form evaluates each infinitesimal tangent vector and returns a scalar value. On higher dimensional parameterizations, a differential form evaluates each infinitesimal parallelepiped spanned by tangent vectors, then sums them according to its weights into a scalar. This acts similarly to integration in $\R^n$, but works with tangent vectors on manifolds. 
 
-To truly capture this aspect of integration, differential forms must encode a deep, geometric way to analyze change, accumulation, and orientation. This naturally generalizes the objects of Vector Calculus to manifolds beyond $\R^n$. This is the primary goal of this text: to explain how differential forms are developed into objects that encapsulate these properties.
+To truly capture this aspect of integration, differential forms must encode a geometric way to analyze change, accumulation, and orientation. This naturally generalizes the objects of Vector Calculus to manifolds beyond $\R^n$. This is the primary goal of this text: to explain how differential forms are developed into objects that encapsulate these properties.
 
 \subsection{Multilinear Maps and Tensors}
 
@@ -385,6 +385,115 @@ y_1 \\
 y_2
 \end{pmatrix}
 \]
+
+These properties of tensors allow them to describe properties in space, which makes them a natural choice to represent a differential form. Specifically, a differential form is a kind of covariant tensor field, meaning that it purely maps tangent vectors to a real number at each point of a manifold.
+
+\subsection{Basis Differential Forms}
+
+A given tangent space $T_p M$ is spanned by the basis tangent vectors $\at{\frac{\p}{\p x^i}}{p}$. For every basis tangent vector, there exists a covector $dx^i$ that maps $\frac{\p}{\p x^i}$ to $\R$. This is a basis differential form of the dual space $T_p ^* M$. Any differential 1-form $\omega$ can be expressed as a linear combination $a_i dx^i$ of scalar functions $a_i : M \to \R$ and basis forms of $T_p ^* M$. 
+
+This definition is purely local and coordinate based. However, the variation of coordinate vector fields is automatically accounted for because the basis itself is smoothly varying across the manifold. Therefore, the basis forms smoothly vary, so $\omega$ can exist as a smooth field. In this way, differential 1-forms can be expressed in coordinates based on their dual tangent vectors.
+
+
+\subsection{Antisymmetry and Geometry}
+
+A key part of differential forms is their ability to compute signed $n$-volumes. We will explore how the algebraic structure of differential forms allows for this.
+
+\subsubsection{Computing Differential 1-Forms on Tangent Vectors}
+
+Assume a basis form $dx^n$ dual to $\frac{\p}{\p x^n}$ at a point on a manifold. When choosing two indices $i$ and $j$, they can be applied as 
+\[
+dx^i \left( \frac{\p}{\p x^j}\right) = \delta_{ij}
+\] 
+where
+\[
+\delta_{ij} = \begin{cases} 
+1 & \text{if } i = j \\ 
+0 & \text{if } i \neq j 
+\end{cases}
+\]
+This is the Kronecker delta, which ensures that the indices match. Therefore, a basis differential form locally extracts a given direction from a tangent vector. For example, at a point, 
+\[
+dx^1 \left( \frac{\p}{\p x^1}\right) = 1
+\]
+
+\subsubsection{Alternation}
+
+Differential forms are defined as alternating tensors. This forces a permutation of inputs to change the sign of the form. For example,
+\[
+dx^i \wedge dx^j (u,v) = - dx^i \wedge dx^j (v,u)
+\]
+where $\wedge$ represents the antisymmetric wedge product. This is the operator that allows for the construction of higher order forms, and will be covered in more detail in Section 5. Antisymmetry in differential forms is a mathematical encoding of orientation: swapping the order of vectors reverses the sign of the measurement, just as reversing the traversal direction of a parallelogram flips its oriented area.
+
+The general definition for alternation is 
+\[
+dx^{i_1} \wedge \cdots \wedge dx^{i_k} 
+= \operatorname{sgn}(\sigma) \, dx^{i_{\sigma(1)}} \wedge \cdots \wedge dx^{i_{\sigma(k)}}
+\]
+where $\sigma$ is the permutation group. This change of sign comes when the parallelepiped permutes its own direction. This encodes the property of orientation, which becomes paramount when evaluating differential forms on tangent vectors. 
+
+\subsubsection{Connection to $n$-Volume}
+
+Consider the 3 axioms that define the determinant of matrices
+
+\begin{enumerate}
+\item Multilinearity: $\det(A)$ is linear in each argument
+\item Antisymmetry: $\det(A) = 0 \text{ if } r_i = r_j \text{ for } i \neq j$
+\item Normalization: $\det(I_n) = 1$
+\end{enumerate}
+
+These properties give the determinant its ability to compute $n$-volumes. Multilinearity ensures that volume scales linearly, antisymmetry allows the map to measure orientation, and normalization ensures that the unit hypercube has a fixed measurement of 1.
+
+
+When a $k$-form is applied to $k$ tangent vectors, the result is computed via a determinant. For example, with a 2-form in $\R^2$: consider the 2-form
+\[
+\omega = dx \wedge dy
+\]
+and let
+\[
+v_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix}, \quad v_2 = \begin{pmatrix} 3 \\ 4 \end{pmatrix}
+\]
+be two tangent vectors.
+
+Evaluating the 2-form on these vectors gives
+\[
+\begin{aligned}
+\omega(v_1, v_2) 
+&= (dx \wedge dy)(v_1, v_2) \\
+&= 
+\det
+\begin{pmatrix}
+dx(v_1) & dx(v_2) \\
+dy(v_1) & dy(v_2)
+\end{pmatrix} \\
+&=
+\det
+\begin{pmatrix}
+1 & 3 \\
+2 & 4
+\end{pmatrix} \\
+&= 1 \cdot 4 - 2 \cdot 3 = -2.
+\end{aligned}
+\]
+
+This shows that $dx \wedge dy$ measures the oriented area spanned by $v_1$ and $v_2$ in $\mathbb{R}^2$, with the negative sign indicating that the vectors are oriented opposite to the standard $(x,y)$ orientation. 
+
+In general, this determinant follows
+\[
+(dx^{i_1} \wedge \cdots \wedge dx^{i_k})(v_1, \dots, v_k)
+=
+\det
+\begin{pmatrix}
+dx^{i_1}(v_1) & \cdots & dx^{i_1}(v_k) \\
+\vdots & \ddots & \vdots \\
+dx^{i_k}(v_1) & \cdots & dx^{i_k}(v_k)
+\end{pmatrix}.
+\]
+
+Each entry $dx^{i_a}(v_b)$ extracts the $i_a$-th coordinate of the vector $v_b$, so the matrix is constructed from the components of the vectors themselves. Therefore, the wedge product assembles these components into a determinant. This shows that differential forms are, in fact, functionals that compute determinants of the components of their input vectors.
+In short, the wedge product and antisymmetry give differential forms the ability to measure geometric quantities precisely. We will now take a closer look at the algebraic properties of differential forms and show how this affects their geometric properties.
+
+\section{Exterior Algebra and the Wedge Product}
 
 
 \section{Appendix}
