@@ -299,70 +299,69 @@ By prioritizing our analysis on coordinate independent objects, we create a gene
 
 \section{Differential Forms}
 
-One primary goal of Exterior Calculus is to create a generalized object on manifolds that can be integrated. This object is called a differential form. When integrated on a parameterization, the differential form evaluates each infinitesimal tangent vector and returns a scalar value. On higher dimensional parameterizations, a differential form evaluates each infinitesimal parallelepiped spanned by tangent vectors, then sums them according to its weights into a scalar. This acts similarly to integration in $\R^n$, but works with tangent vectors on manifolds. 
+The central goal of Exterior Calculus is to extend integration to manifolds. In Vector Calculus, integration is defined separately for each type of region: a line integral uses the integrand $\bv{F} \cdot d\bv{r}$, a surface integral uses $\bv{F} \cdot d\bv{S}$, and a volume integral uses $f\,dV$. On a manifold, we need a single, coordinate-independent object that serves as the integrand for regions of any dimension.
 
-To truly capture this aspect of integration, differential forms must encode a geometric way to analyze change, accumulation, and orientation. This naturally generalizes the objects of Vector Calculus to manifolds beyond $\R^n$. This is the primary goal of this text: to explain how differential forms are developed into objects that encapsulate these properties.
+A differential form is the generalization of the integrand from Euclidean space to manifolds. A differential $k$-form is an object that can be integrated over $k$-dimensional regions: a $1$-form integrates over curves, a $2$-form over surfaces, and so on. The integrands in Vector Calculus already match this format. Differential forms make the structure explicit and extend it beyond $\R^3$. For differential forms to serve as integrands, they must encode orientation as well as magnitude. Reversing the direction of traversal must flip the sign, just as swapping the bounds of a definite integral does. This requirement will shape the algebraic structure developed in this chapter.
 
-\subsection{Multilinear Maps and Tensors}
+\subsection{Multilinear Maps and Tensors} 
+
+Before we define differential forms as integrands, we need a language that can precisely describe how quantities depend on multiple directions at once. Since a $k$-form operates in $k$ dimensional tangent space and return a scalar, we need a multilinear map from the tangent space to $\R$. Tensors, a kind of multilinear map, provide this exact framework. From this, differential forms will emerge naturally as a special kind of tensor designed specifically for integration.
 
 \subsubsection{Multilinear Maps}
 
 Recall the definition for a linear map between vector spaces $T: V \to W$
 
 \[
-T(au + bv) = aT(v)+bT(u) \quad a,b \in \R, \; u,v \in V.
+T(a\bv{u} + b\bv{v}) = aT(\bv{v})+bT(\bv{u}) \quad a,b \in \R, \; \bv{u},\bv{v} \in V.
 \]
 
-A multilinear map is a map 
+A multilinear map is a map from multiple vector spaces $V_n$ 
 \[
 T: V_1 \times \dots \times V_n \to W
 \]
 
 that is linear with respect to each variable. That is, for each variable $u$ in $T$, if all other variables are held constant, $T$ is linear in $u$. For example, the dot product in $\R^n$ is multilinear (specifically bilinear), as
 \[
-(au + bv) \cdot w = a(u \cdot w) + b(v \cdot w) \text{ and } u \cdot (av + bw) = a(u \cdot v) + b(u \cdot w).
+(a\bv{u} + b\bv{v}) \cdot \bv{w} = a(\bv{u} \cdot \bv{w}) + b(\bv{v} \cdot \bv{w}) \text{ and } \bv{u} \cdot (a\bv{v} + b\bv{w}) = a(\bv{u} \cdot \bv{v}) + b(\bv{u} \cdot \bv{w}).
 \]
 
 Multilinear maps are a crucial concept as they allow us to define tensors, which is the fundamental concept that differential forms are built upon.
 
 \subsubsection{Covectors}
 
-Before discussing tensors, we must mention covectors. Given a vector space $V$, its dual space $V^*$ is the set of all linear mappings 
+Before discussing tensors, we must mention covectors. Given a vector space $V$, its dual space $V^*$ is the set of all linear mappings
 \[
-c: V \to \R.
+\alpha: V \to \R.
 \]
-Each element $c$ is a covector. 
+Each element $\alpha$ is a covector. Therefore, a covector can be viewed as a multivariable, linear function that maps vectors to real numbers.
 
-This formal definition of a covectors is helpful as they are used extensively. For example, the inner product of two vectors represented as $v^T u$ simply means
-\[
-v^T u = \text{the dual of }v \text{ (}v^T\text{) applied to u, which results in a scalar value.}
-\]
+For example, the map $\alpha: \R^2 \to \R$ defined by $\alpha(\bv{v}) = 3v_1 - v_2$ is a covector.
 
-Therefore, a covector is simply an object that linearly maps a vector to a real number.
+As we will see, a differential 1-form assigns a covector to each point of a manifold. Therefore, a covector is precisely what a 1-form looks like at a single point.
 
-\subsubsection{Tensors}
+\subsubsection{Tensors} % say what V_1 and Vq and indicies and blah are V_q -> V_p 2 indicies? im not gonna know what this means but basically add more detail to (p,q) be clear what things are
 A tensor is a specific type of multilinear map that maps covectors and vectors to a scalar value.
 \[
 T: V^*_1 \times \dots \times V^*_p \times V_1 \times \dots \times V_q \to \R.
 \]
 
-This is specifically referred to as a type $(p,q)$ tensor.
+This is specifically referred to as a type $(p,q)$ tensor, where $p$ counts the covector inputs and $q$ counts the vector inputs. A tensor takes both kinds of input because covectors and vectors pair naturally: given $\alpha \in V^*$ and $\bv{v} \in V$, evaluating $\alpha(\bv{v})$ produces a scalar. A $(p,q)$ tensor extends this pairing to $p + q$ inputs in a multilinear way.
 
 For example, a covector linearly maps one vector to a real number. Therefore, it is a $(0,1)$ tensor via
 \[
 T: V_1 \to \R.
 \]
-A vector linearly maps one covector to a real number. Therefore, it is a $(1,0)$ tensor
+A vector $\bv{v} \in V$ is a $(1,0)$ tensor. This is the least obvious example, since vectors are not typically viewed as functions. However, given a covector $\alpha \in V^*$, evaluating $\alpha(\bv{v}) \in \R$ is a natural operation. Holding $\bv{v}$ constant and changing $\alpha$, the map $\alpha \mapsto \alpha(\bv{v})$ is linear in $\alpha$. Therefore, $\bv{v}$ is a linear functional on $V^*$:
 \[
 T: V^*_1 \to \R.
 \]
-The dot product bilinearly maps two vectors to a real number. Therefore, it is a $(0,2)$ tensor
+The Euclidean inner product, bilinearly maps two vectors to a real number. Therefore, it is a $(0,2)$ tensor
 \[
 T:V_1 \times V_2 \to \R.
 \]
-All of these geometric objects have a representation as a multilinear map. This is the abstract form of a tensor. The coordinate representation can be obtained by applying the tensor to basis elements. For example, in $\R^2$, the dot product of vectors $x$ and $y$ with basis ${\ihat, \jhat}$ can be represented by
+All of these geometric objects have a representation as a multilinear map. This is the abstract form of a tensor. The coordinate representation can be obtained by applying the tensor to basis elements. For example, in $\R^2$, the dot product of vectors $\bv{x}$ and $\bv{y}$ with basis $\{\ihat, \jhat\}$ can be represented by
 \[
-T(x_1 \ihat +x_2 \jhat, y_1 \ihat +y_2 \jhat).
+T(x_1 \ihat + x_2 \jhat,\; y_1 \ihat + y_2 \jhat).
 \]
 This can be expressed as a matrix
 \[
@@ -371,7 +370,7 @@ T(\ihat, \ihat), T(\ihat, \jhat) \\
 T(\jhat, \ihat), T(\jhat, \jhat)
 \end{bmatrix}.
 \]
-Therefore, the dot product can be expressed as
+Therefore, the Euclidean inner product can be expressed as
 \[
 \begin{pmatrix}
 x_1 & x_2
@@ -388,115 +387,85 @@ y_2
 
 These properties of tensors allow them to describe properties in space, which makes them a natural choice to represent a differential form. Specifically, a differential form is a kind of covariant tensor field, meaning that it purely maps tangent vectors to a real number at each point of a manifold.
 
-\subsection{Basis Differential Forms}
+\subsection{Differential 1-Forms}
 
-A given tangent space $T_p M$ is spanned by the basis tangent vectors $\at{\frac{\p}{\p x^i}}{p}$. For every basis tangent vector, there exists a covector $dx^i$ that maps $\frac{\p}{\p x^i}$ to $\R$. This is a basis differential form of the dual space $T_p ^* M$. Any differential 1-form $\omega$ can be expressed as a linear combination $a_i dx^i$ of scalar functions $a_i : M \to \R$ and basis forms of $T_p ^* M$. 
+With tensors and covectors in hand, we now define the first kind of differential form. A differential 1-form $\omega$ on a manifold $M$ is a smooth assignment of a covector to each point: at every $p \in M$, $\omega_p$ is a linear functional on the tangent space $T_pM$. This is the generalization of a covector to a manifold. Rather than operating on a single vector space, a 1-form operates across the entire tangent bundle by assigning a covector to each tangent space smoothly.
 
-This definition is purely local and coordinate based. However, the variation of coordinate vector fields is automatically accounted for because the basis itself is smoothly varying across the manifold. Therefore, the basis forms smoothly vary, so $\omega$ can exist as a smooth field. In this way, differential 1-forms can be expressed in coordinates based on their dual tangent vectors.
+A scalar function $f: M \to \R$ is a 0-form. Since a 0-form integrates over points, it is integrated by simply evaluating the function at the given point, consistent with the $k$-form framework established at the start of this chapter.
 
+The most natural source of 1-forms is differentiation. Given a smooth function $f: M \to \R$, the differential $df$ is a 1-form that generalizes the gradient from Vector Calculus. In $\R^n$, the gradient $\nabla f$ encodes the rate of change of $f$ in every direction; $df$ does the same on a manifold, but as a covector field rather than a vector field. At each point $p$, $df_p$ assigns to each tangent direction $\bv{v}$ the rate of change of $f$ along $\bv{v}$. Applying this to each coordinate function $x^i: M \to \R$ produces the basis differentials $dx^i$.
 
-\subsection{Antisymmetry and Geometry}
-
-A key part of differential forms is their ability to compute signed $n$-volumes. We will explore how the algebraic structure of differential forms allows for this.
-
-\subsubsection{Computing Differential 1-Forms on Tangent Vectors}
-
-Assume a basis form $dx^n$ dual to $\frac{\p}{\p x^n}$ at a point on a manifold. When choosing two indices $i$ and $j$, they can be applied as 
+The symbols $dx^i$ play two roles simultaneously: they are the differentials of the coordinate functions $x^i$, and they are the basis covectors dual to the coordinate vector fields $\frac{\p}{\p x^i}$. These are the same object. In coordinates, any 1-form $\omega$ on $M$ can therefore be expressed as
 \[
-dx^i \left( \frac{\p}{\p x^j}\right) = \delta_{ij}
-\] 
-where
-\[
-\delta_{ij} = \begin{cases} 
-1 & \text{if } i = j \\ 
-0 & \text{if } i \neq j 
-\end{cases}
+\omega = a_i \, dx^i
 \]
-This is the Kronecker delta, which ensures that the indices match. Therefore, a basis differential form locally extracts a given direction from a tangent vector. For example, at a point, 
-\[
-dx^1 \left( \frac{\p}{\p x^1}\right) = 1
-\]
+where $a_i: M \to \R$ are smooth functions and the $dx^i$ span the cotangent space $T_p^*M$ at each point.
 
-\subsubsection{Alternation}
+\subsection{The Wedge Product and $k$-Forms}
 
-Differential forms are defined as alternating tensors. This forces a permutation of inputs to change the sign of the form. For example,
-\[
-dx^i \wedge dx^j (u,v) = - dx^i \wedge dx^j (v,u)
-\]
-where $\wedge$ represents the antisymmetric wedge product. This is the operator that allows for the construction of higher order forms, and will be covered in more detail in Section 5. Antisymmetry in differential forms is a mathematical encoding of orientation: swapping the order of vectors reverses the sign of the measurement, just as reversing the traversal direction of a parallelogram flips its oriented area.
+A 1-form integrates over curves. To integrate over a surface, we need an object that takes two tangent vectors as input, one for each dimension of the surface. More generally, to integrate over a $k$-dimensional region we need a $k$-form: an object that takes $k$ tangent vectors and returns a scalar. The wedge product is the operation that builds $k$-forms from 1-forms.
 
-The general definition for alternation is 
+\subsubsection{The Wedge Product}
+
+Given two 1-forms $\alpha$ and $\beta$, their wedge product $\alpha \wedge \beta$ is a 2-form defined by
 \[
-dx^{i_1} \wedge \cdots \wedge dx^{i_k} 
-= \operatorname{sgn}(\sigma) \, dx^{i_{\sigma(1)}} \wedge \cdots \wedge dx^{i_{\sigma(k)}}
+(\alpha \wedge \beta)(\bv{u}, \bv{v}) = \alpha(\bv{u})\beta(\bv{v}) - \alpha(\bv{v})\beta(\bv{u}).
 \]
-where $\sigma$ is the permutation group. This change of sign comes when the parallelepiped permutes its own direction. This encodes the property of orientation, which becomes paramount when evaluating differential forms on tangent vectors. 
+This combines two 1-forms into an object that maps two tangent vectors to a scalar corresponding to the area of the parallelogram spanned by the vectors. A $k$-form is built by wedging $k$ 1-forms together:
+\[
+\omega = dx^{i_1} \wedge \cdots \wedge dx^{i_k}.
+\]
+Any $k$-form on a manifold can be expressed as a linear combination of such products.
+
+\subsubsection{Antisymmetry and Orientation}
+
+The wedge product is antisymmetric, meaning that swapping any two factors flips the sign,
+\[
+\alpha \wedge \beta = -\beta \wedge \alpha.
+\]
+Integrating over a surface requires choosing an orientation, and reversing that orientation must flip the sign of the result, just as swapping the bounds of a definite integral does. The antisymmetry of the wedge product encodes this property. Under any permutation $\sigma$ of the factors, the sign changes by $\operatorname{sgn}(\sigma)$:
+\[
+dx^{i_{\sigma(1)}} \wedge \cdots \wedge dx^{i_{\sigma(k)}} = \operatorname{sgn}(\sigma)\, dx^{i_1} \wedge \cdots \wedge dx^{i_k}.
+\]
+One property that emerges from this is nilpotency: $\alpha \wedge \alpha = 0$. The permutation must change the sign, but it leaves the form unchanged, forcing the value to be zero:
+\[
+\alpha \wedge \alpha = - \alpha \wedge \alpha \iff \alpha \wedge \alpha = 0.
+\]
+ Geometrically, this reflects the fact that a parallelogram spanned by two identical vectors has no area.
 
 \subsubsection{Connection to $n$-Volume}
 
-Consider the 3 axioms that define the determinant of matrices
-
-\begin{enumerate}
-\item Multilinearity: $\det(A)$ is linear in each argument
-\item Antisymmetry: $\det(A) = 0 \text{ if } r_i = r_j \text{ for } i \neq j$
-\item Normalization: $\det(I_n) = 1$
-\end{enumerate}
-
-These properties give the determinant its ability to compute $n$-volumes. Multilinearity ensures that volume scales linearly, antisymmetry allows the map to measure orientation, and normalization ensures that the unit hypercube has a fixed measurement of 1.
-
-
-When a $k$-form is applied to $k$ tangent vectors, the result is computed via a determinant. For example, with a 2-form in $\R^2$: consider the 2-form
+A $k$-form is multilinear and antisymmetric. Since these are precisely the axioms of the determinant, evaluating a $k$-form on $k$ tangent vectors must compute one:
 \[
-\omega = dx \wedge dy
+(dx^{i_1} \wedge \cdots \wedge dx^{i_k})(\bv{v}_1, \dots, \bv{v}_k) = \det \begin{pmatrix} dx^{i_1}(\bv{v}_1) & \cdots & dx^{i_1}(\bv{v}_k) \\ \vdots & \ddots & \vdots \\ dx^{i_k}(\bv{v}_1) & \cdots & dx^{i_k}(\bv{v}_k) \end{pmatrix}.
 \]
-and let
-\[
-v_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix}, \quad v_2 = \begin{pmatrix} 3 \\ 4 \end{pmatrix}
-\]
-be two tangent vectors.
+Each entry $dx^{i_a}(\bv{v}_b)$ is the $i_a$-th component of $\bv{v}_b$. Since the determinant measures oriented $k$-volume, a $k$-form is a smooth field of oriented $k$-volume measurements on the manifold.
 
-Evaluating the 2-form on these vectors gives
-\[
-\begin{aligned}
-\omega(v_1, v_2) 
-&= (dx \wedge dy)(v_1, v_2) \\
-&= 
-\det
-\begin{pmatrix}
-dx(v_1) & dx(v_2) \\
-dy(v_1) & dy(v_2)
-\end{pmatrix} \\
-&=
-\det
-\begin{pmatrix}
-1 & 3 \\
-2 & 4
-\end{pmatrix} \\
-&= 1 \cdot 4 - 2 \cdot 3 = -2.
-\end{aligned}
-\]
-
-This shows that $dx \wedge dy$ measures the oriented area spanned by $v_1$ and $v_2$ in $\mathbb{R}^2$, with the negative sign indicating that the vectors are oriented opposite to the standard $(x,y)$ orientation. 
-
-In general, this determinant follows
-\[
-(dx^{i_1} \wedge \cdots \wedge dx^{i_k})(v_1, \dots, v_k)
-=
-\det
-\begin{pmatrix}
-dx^{i_1}(v_1) & \cdots & dx^{i_1}(v_k) \\
-\vdots & \ddots & \vdots \\
-dx^{i_k}(v_1) & \cdots & dx^{i_k}(v_k)
-\end{pmatrix}.
-\]
-
-Each entry $dx^{i_a}(v_b)$ extracts the $i_a$-th coordinate of the vector $v_b$, so the matrix is constructed from the components of the vectors themselves. Therefore, the wedge product assembles these components into a determinant. This shows that differential forms are, in fact, functionals that compute determinants of the components of their input vectors.
-In short, the wedge product and antisymmetry give differential forms the ability to measure geometric quantities precisely. We will now take a closer look at the algebraic properties of differential forms and show how this affects their geometric properties.
-
-\section{Exterior Algebra and the Wedge Product}
-
+\section{Pullbacks and Pushforwards}
+\section{Integration}
+\section{Exterior Derivative}
+\section{Generalized Stokes' Theorem}
 
 \section{Appendix}
+
+\subsection*{Evaluation of Basis 1-Forms on Tangent Vectors}
+
+Given a basis 1-form $dx^i$ dual to the coordinate vector field $\frac{\p}{\p x^i}$ at a point on a manifold, its evaluation on a coordinate vector $\frac{\p}{\p x^j}$ is given by
+\[
+dx^i \left( \frac{\p}{\p x^j}\right) = \delta_{ij}
+\]
+where
+\[
+\delta_{ij} = \begin{cases}
+1 & \text{if } i = j \\
+0 & \text{if } i \neq j
+\end{cases}
+\]
+is the Kronecker delta. Therefore, a basis 1-form extracts a single coordinate direction from a tangent vector. For example,
+\[
+dx^1 \left( \frac{\p}{\p x^1}\right) = 1, \qquad dx^1 \left( \frac{\p}{\p x^2}\right) = 0.
+\]
+A general tangent vector $\bv{v} = v^i \frac{\p}{\p x^i}$ is mapped by linearity to $dx^j(\bv{v}) = v^j$: the basis 1-form $dx^j$ simply reads off the $j$-th component of $\bv{v}$.
 
 Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
 
@@ -538,6 +507,7 @@ This result does not obey the tensor transformation law, and contains a coordina
 \]
 	
 is tied to the particular coordinate system $x^i$. When the coordinates change, these operators change in a way that reflects the coordinate grid rather than the intrinsic geometry. This is why the second partial derivative is not intrinsically geometric, as it combines the function's intrinsic curvature with the curvature of the coordinate grid.
+
 
 
 \section {Citations}
