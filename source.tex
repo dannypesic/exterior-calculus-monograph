@@ -441,7 +441,71 @@ A $k$-form is multilinear and antisymmetric. Since these are precisely the axiom
 \]
 Each entry $dx^{i_a}(\bv{v}_b)$ is the $i_a$-th component of $\bv{v}_b$. Since the determinant measures oriented $k$-volume, a $k$-form is a smooth field of oriented $k$-volume measurements on the manifold.
 
-\section{Pullbacks and Pushforwards}
+\section{Pushforwards and Pullbacks}
+
+In Vector Calculus, the Jacobian allows for the change of variables. It measures how a map changes space and transforms the integrand accordingly. To integrate on manifolds, we need the same capability, but generalized for differential forms. This section builds the framework that allows us to move functions and geometric objects across smooth maps. They will be central to defining integration on manifolds and ultimately, the Generalized Stokes' Theorem.
+
+\subsection{Pullback of Scalar Functions}
+
+Consider a smooth map between manifolds $F: M \to N$. This mapping between spaces can also map objects within them. Consider a function $g: N \to \R$. Given that $g$ is a smooth function on $N$, we can produce a smooth function on $M$ by composing with $F$:
+\[
+F^* g = g \circ F : M \to \R.
+\]
+The function $F^* g$ is named the pullback of $g$ by $F$. The map $F$ routes each point $p \in M$ to $F(p) \in N$, then $g$ assigns a scalar value. The result is a function that evaluates $g$ from points on $M$.
+
+This operation, the pullback of scalar functions, is the foundation for moving objects across manifolds, providing a generalized framework for integrand transformations and change of variables. 
+
+\subsection{The Pushforward}
+
+Consider a smooth map $F: \R^m \to \R^n$. The Jacobian matrix at a point $p$ gives the best linear approximation of $F$ near $p$. Given a vector $\bv{v}$ at $p$, the Jacobian maps it to a vector at $F(p)$ by
+\[
+J_F(p)\,\bv{v} =
+\begin{pmatrix}
+\dfrac{\p F^1}{\p x^1} & \cdots & \dfrac{\p F^1}{\p x^m} \\[6pt]
+\vdots & \ddots & \vdots \\[2pt]
+\dfrac{\p F^n}{\p x^1} & \cdots & \dfrac{\p F^n}{\p x^m}
+\end{pmatrix}
+\begin{pmatrix} v^1 \\ \vdots \\ v^m \end{pmatrix}.
+\]
+Since $J_F(p)$ is a linear map from $\R^m$ to $\R^n$, it carries the vector space structure of vectors at $p$ to vectors at $F(p)$. This describes how $F$ transforms directions across the vector spaces.
+
+However, one might notice the Jacobian matrix is defined entirely in terms of coordinates. Since manifolds do not have global coordinate systems, the Jacobian cannot be directly applied to maps between manifolds. To generalize this idea, we need a coordinate independent version.
+
+Since tangent vectors on a manifold are derivations, the coordinate-independent generalization of the Jacobian must act on derivations. Consider a smooth map $F: M \to N$ where $p \in M$ is sent to $F(p) \in N$. A tangent vector $v \in T_pM$ acts on smooth functions $f: M \to \R$; we want to produce a derivation at $F(p)$ acting on smooth functions $g: N \to \R$. The differential $dF_p: T_pM \to T_{F(p)}N$ accomplishes this by
+\[
+(dF_p \cdot v)(g) = v(g \circ F)
+\]
+for any smooth $g: N \to \R$. Since $g \circ F: M \to \R$ is smooth, $v(g \circ F)$ is well-defined, and $dF_p \cdot v$ satisfies linearity and the Leibniz rule, it is a derivation at $F(p)$. This mapping is called a pushforward.
+The pushforward is a linear map between the vector spaces $T_pM$ and $T_{F(p)}N$, matching how the Jacobian behaves between $\R^m$ and $\R^n$. Written in local coordinates $(x^1, \dots, x^m)$ on $M$ and $(y^1, \dots, y^n)$ on $N$, the pushforward acts on coordinate basis vectors via
+\[
+dF_p\!\left(\frac{\p}{\p x^i}\right) = \frac{\p F^j}{\p x^i}\,\frac{\p}{\p y^j},
+\]
+where $F^j = y^j \circ F$ are the coordinate components of $F$. The matrix $\left(\frac{\p F^j}{\p x^i}\right)$ is exactly the Jacobian of $F$ in these charts. Therefore, $dF_p$ becomes the intrinsic object and the Jacobian is its coordinate representation.
+
+The name ``pushforward'' comes from how the map acts geometrically: $dF_p$ ``pushes'' each tangent vector at $p$ forward through $F$ to a tangent vector at $F(p)$, just as the Jacobian pushes vectors forward through a map between Euclidean spaces. The notation $F_*$ is used to represent the set of all maps $dF_p \;\; \forall p \in M$.
+
+Recall that the term $g \circ F$ is the pullback of $g$ by $F$. Since $F^{*}g$ is a scalar function on $M$, the derivation $v \in T_pM$ may operate on it, allowing for vectors to be applied to functions across manifolds. In this way, the pushforward of a vector is defined in terms of a scalar function's pullback.
+
+\subsection{Pullback of Differential Forms}
+
+A $k$-form on $N$ operates on $k$ tangent vectors at a point of $N$ and returns a scalar value. We cannot always push a form forward along a general smooth map, though, since a map from $T_{F(p)}N$ to $T_pM$ only exists if $F$ is a homeomorphism. However, with the pushforward $dF_p: T_pM \to T_{F(p)}N$ mapping derivations to $N$, we can map each input vector through the pushforward, then operate with $\omega$. For $v_1, \dots, v_k \in T_pM$, define
+\[
+(F^*\omega)_p(v_1, \dots, v_k) = \omega_{F(p)}(dF_p \cdot v_1, \dots, dF_p \cdot v_k).
+\]
+This is the pullback of $\omega$ by $F$. It is a $k$-form on $M$, pulled back along $F$ just like a scalar function.
+
+In local coordinates $(x^1, \dots, x^m)$ on $M$ and $(y^1, \dots, y^n)$ on $N$, the pullback of a coordinate 1-form is
+\[
+F^*(dy^j) = dF^j = \frac{\p F^j}{\p x^i}\,dx^i,
+\]
+where $F^j = y^j \circ F$ is the $j$-th component of $F$. For a general $k$-form $\omega = f_{i_1 \cdots i_k}\, dy^{i_1} \wedge \cdots \wedge dy^{i_k}$ on $N$, linearity gives
+\[
+F^*\omega = (f_{i_1 \cdots i_k} \circ F)\, F^*(dy^{i_1}) \wedge \cdots \wedge F^*(dy^{i_k}).
+\]
+The Jacobian entries $\frac{\p F^j}{\p x^i}$ appear in each factor, and the wedge product assembles them into the $k$-form coefficients on $M$.
+
+The pullback of differential forms allows us to transform them across manifolds. This is particularly significant as it allows us to simplify and evaluate integrals, eventually culminating in the Generalized Stokes' Theorem.
+
 \section{Integration}
 \section{Exterior Derivative}
 \section{Generalized Stokes' Theorem}
