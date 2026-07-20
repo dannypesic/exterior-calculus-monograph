@@ -40,7 +40,8 @@ Vector Calculus is a powerful yet limited tool. It allows us to extend the conce
     \item How can we analyze functions intrinsically without relying on coordinates?
 \end{itemize}
 
-The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond. % something else to reference exterior algebra
+The primary goal of Exterior Calculus is to provide an abstract framework with a specialized algebra to analyze complex geometric systems. It must not replace Vector Calculus, but build upon it to help us understand what lies beyond.
+
 \subsection{Limitations of Integral Theorems}
 Consider the three integral theorems of Vector Calculus. These theorems are viewed as the capstone of the field, giving a geometric relation between the ideas of flux, vorticity, boundaries, and integrals. 
 \\\\ Green's Theorem
@@ -143,7 +144,7 @@ Since a smooth manifold does not have a global coordinate chart, the coordinate 
 \[
 (U,\varphi), \quad \varphi = (x^1,x^2, \dots, x^n), \quad p\in U
 \]
-induces the local coordinate vector fields $\frac{\p}{\p x^1}, \frac{\p}{\p x^2},\dots \frac{\p}{\p x^n}$ on $U$. These vectors point in the direction of their corresponding coordinate. This notation of expressing coordinate vectors as partial derivative operators will be explained in Section 2.2.3. % Gabe will review notation
+induces the local coordinate vector fields $\frac{\p}{\p x^1}, \frac{\p}{\p x^2},\dots \frac{\p}{\p x^n}$ on $U$. These vectors point in the direction of their corresponding coordinate. This notation of expressing coordinate vectors as partial derivative operators will be explained in Section 2.2.3.
 \subsubsection{Tangent Vectors}
 A tangent vector on a manifold is a vector attached at a specific point $p$ such that it is tangent to the surface of the manifold. In coordinates, a tangent vector is a linear combination of the local coordinate vector fields. However, we will define a more geometric definition for abstract tangent vectors that does not rely on an arbitrary coordinate chart.
 
@@ -339,7 +340,7 @@ For example, the map $\alpha: \R^2 \to \R$ defined by $\alpha(\bv{v}) = 3v_1 - v
 
 As we will see, a differential 1-form assigns a covector to each point of a manifold. Therefore, a covector is precisely what a 1-form looks like at a single point.
 
-\subsubsection{Tensors} % say what V_1 and Vq and indicies and blah are V_q -> V_p 2 indicies? im not gonna know what this means but basically add more detail to (p,q) be clear what things are
+\subsubsection{Tensors} 
 A tensor is a specific type of multilinear map that maps covectors and vectors to a scalar value.
 \[
 T: V^*_1 \times \dots \times V^*_p \times V_1 \times \dots \times V_q \to \R.
@@ -425,7 +426,7 @@ The wedge product is antisymmetric, meaning that swapping any two factors flips 
 \]
 Integrating over a surface requires choosing an orientation, and reversing that orientation must flip the sign of the result, just as swapping the bounds of a definite integral does. The antisymmetry of the wedge product encodes this property. Under any permutation $\sigma$ of the factors, the sign changes by $\operatorname{sgn}(\sigma)$:
 \[
-dx^{i_{\sigma(1)}} \wedge \cdots \wedge dx^{i_{\sigma(k)}} = \operatorname{sgn}(\sigma)\, dx^{i_1} \wedge \cdots \wedge dx^{i_k}.
+\alpha_{\sigma(1)} \wedge \cdots \wedge \alpha_{\sigma(k)} = \operatorname{sgn}(\sigma)\, \alpha_1 \wedge \cdots \wedge \alpha_k.
 \]
 One property that emerges from this is nilpotency: $\alpha \wedge \alpha = 0$. The permutation must change the sign, but it leaves the form unchanged, forcing the value to be zero:
 \[
@@ -444,6 +445,8 @@ Each entry $dx^{i_a}(\bv{v}_b)$ is the $i_a$-th component of $\bv{v}_b$. Since t
 \section{Pushforwards and Pullbacks}
 
 In Vector Calculus, the Jacobian allows for the change of variables. It measures how a map changes space and transforms the integrand accordingly. To integrate on manifolds, we need the same capability, but generalized for differential forms. This section builds the framework that allows us to move functions and geometric objects across smooth maps. They will be central to defining integration on manifolds and ultimately, the Generalized Stokes' Theorem.
+
+Before we build these maps, recall from Section 2.2 that a tangent vector is a derivation, a differential operator that acts on smooth functions. In $\R^n$, that operator is the directional derivative, so the tangent vector $\bv{v}$ at $p$ acts on a function as $\bv{v} \cdot \at{\nabla}{p}$. The maps in this section move tangent vectors across smooth maps, and they do so by acting on this operator. The subscript $p$ marks the point where a tangent space or map is based, since each construction lives at one point at a time.
 
 \subsection{Pullback of Scalar Functions}
 
