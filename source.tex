@@ -510,32 +510,160 @@ The Jacobian entries $\frac{\p F^j}{\p x^i}$ appear in each factor, and the wedg
 The pullback of differential forms allows us to transform them across manifolds. This is particularly significant as it allows us to simplify and evaluate integrals, eventually culminating in the Generalized Stokes' Theorem.
 
 \section{Integration}
+
+Chapter 4 defined a differential $k$-form as the object that integrates over a $k$-dimensional region, and Chapter 5 built the pullback that transforms forms across smooth maps. This chapter combines them to define the integral of a $k$-form over a $k$-dimensional region of a manifold. The definition will be coordinate independent, and it will recover the line, surface, and volume integrals of Vector Calculus as special cases.
+
+\subsection{Integrating an $n$-Form over a Region of $\R^n$}
+
+A manifold looks locally like $\R^n$, so we will first look at integration using an $n$-form over a region of $\R^n$. Every later definition reduces to this case.
+
+Let $D \subseteq \R^n$ be a region with coordinates $(x^1, \dots, x^n)$. An $n$-form on an $n$-dimensional space has only one basis wedge: any wedge of $n$ basis 1-forms that repeats a factor vanishes by antisymmetry, and any reordering only changes the sign, so $dx^1 \wedge \cdots \wedge dx^n$ is the only independent form. Every $n$-form on $D$ is therefore a smooth function times this single basis form,
+\[
+\omega = f\,dx^1 \wedge \cdots \wedge dx^n,
+\]
+for some smooth $f: D \to \R$. We define its integral to be the ordinary multiple integral of the coefficient function:
+\[
+\int_D \omega := \int_D f\,dx^1 \cdots dx^n.
+\]
+This connects the integral of a form directly to the multiple integrals of Vector Calculus.
+
+\subsubsection{Change of Coordinates}
+
+This definition is written in the coordinates $(x^1, \dots, x^n)$. However, as explained in Section 3, a geometric integral cannot depend on the coordinates used to compute it. Therefore, the value must be unchanged under a change of coordinates. Let $(y^1, \dots, y^n)$ be a second coordinate system related to the first by a smooth map. To rewrite $\omega$, we must rewrite each basis 1-form $dx^i$. Each $dx^i$ is the differential of the coordinate function $x^i$, so expanding it in the new coordinates by the chain rule gives
+\[
+dx^i = \frac{\p x^i}{\p y^j}\,dy^j.
+\]
+We then wedge all $n$ of these together. Expanding the product gives a sum over every choice of index on the factors. Any term that repeats a factor $dy^j$ contains $dy^j \wedge dy^j = 0$ and vanishes by Section 4.3.2, so only terms whose indices are a permutation of $1, \dots, n$ survive. Reordering each survivor to $dy^1 \wedge \cdots \wedge dy^n$ contributes the sign of its permutation, again by Section 4.3.2. Summing these signed products is exactly the determinant of the coefficient matrix $\left(\frac{\p x^i}{\p y^j}\right)$, the Jacobian of the coordinate change:
+\[
+dx^1 \wedge \cdots \wedge dx^n = \det\!\left(\frac{\p x^i}{\p y^j}\right) dy^1 \wedge \cdots \wedge dy^n.
+\]
+In Vector Calculus the Jacobian determinant is multiplied in as a separate step of the change of variables theorem. Here, the same factor comes out of rewriting the wedge product, so integrating the form gives the same result in either coordinate system.
+
+There is one difference from Vector Calculus, though. The change of variables theorem uses the absolute value $|\det J|$, while the form carries the signed determinant $\det J$. The sign determines whether the coordinate change preserves or reverses orientation. Because of this, the integral of an $n$-form is only defined once the region is assigned an orientation. We will cover orientation in Section 6.3; for now we assume the standard orientation of $\R^n$ given by $dx^1 \wedge \cdots \wedge dx^n$.
+
+As an example, take $D \subseteq \R^2$ with Cartesian coordinates $(x,y)$ and polar coordinates $(r,\theta)$, related by $x = r\cos\theta$ and $y = r\sin\theta$. We rewrite $dx$ and $dy$ in the polar coordinates by the rule above, expanding each as $dx = \frac{\p x}{\p r}\,dr + \frac{\p x}{\p \theta}\,d\theta$ and likewise for $dy$:
+\[
+dx = \cos\theta\,dr - r\sin\theta\,d\theta, \qquad dy = \sin\theta\,dr + r\cos\theta\,d\theta,
+\]
+and wedging them gives
+\[
+dx \wedge dy = (\cos\theta\,dr - r\sin\theta\,d\theta) \wedge (\sin\theta\,dr + r\cos\theta\,d\theta) = r\,dr \wedge d\theta,
+\]
+where the $dr \wedge dr$ and $d\theta \wedge d\theta$ terms vanish by antisymmetry. The factor $r$ is exactly the Jacobian determinant of the polar change of coordinates, recovered directly from the algebra of forms.
+
+\subsection{Integration over a Parameterized Region}
+
+While the base case integrates an $n$-form over a region of $\R^n$, most regions we integrate over are not regions of $\R^n$. A curve in $\R^3$ is one dimensional and a surface in $\R^3$ is two dimensional, yet both are embedded in a higher dimensional space. We reach them the same way Vector Calculus does, through a parameterization.
+
+A parameterization of a $k$-dimensional region $S$ is a smooth map
+\[
+\phi: D \subseteq \R^k \to S,
+\]
+where $D$ is a region of $\R^k$. Given a $k$-form $\omega$ on $S$, its pullback $\phi^*\omega$ is a $k$-form on $D$. Since $D$ is a $k$-dimensional region of $\R^k$, this pullback is exactly the object the base case integrates. We therefore define
+\[
+\int_S \omega := \int_D \phi^*\omega.
+\]
+The parameterization carries the form back to the parameter domain, where the integral is the ordinary multiple integral of Section 6.1.
+
+A region has many parameterizations, and the integral must not depend on which one is chosen. APPENDIX shows that any two parameterizations give the same value once an orientation is fixed. Here we will show that the definition reproduces the integrals of Vector Calculus.
+
+\subsubsection{Line Integrals}
+
+Let $\gamma: [a,b] \to M$ be a curve and $\omega = a_i\,dx^i$ a 1-form on $M$. The pullback expresses $\omega$ in the single parameter $t$. Using the pullback of a coordinate 1-form from Section 5.3,
+\[
+\gamma^*\omega = a_i(\gamma(t))\,\frac{dx^i}{dt}\,dt,
+\]
+so the integral is
+\[
+\int_\gamma \omega = \int_a^b a_i(\gamma(t))\,\frac{dx^i}{dt}\,dt.
+\]
+In Vector Calculus, the line integral of the field $\bv{F} = \langle a_1, \dots, a_n \rangle$ along $\gamma$ is $\int_a^b \bv{F}(\gamma(t)) \cdot \gamma'(t)\,dt$, which is the same expression. The integrand $\bv{F} \cdot d\bv{r}$ is the pullback of the 1-form $a_i\,dx^i$.
+
+\subsubsection{Surface Integrals}
+
+Let $\phi: D \subseteq \R^2 \to \R^3$ parameterize a surface with parameters $(u,v)$, and let
+\[
+\omega = P\,dy \wedge dz + Q\,dz \wedge dx + R\,dx \wedge dy
+\]
+be a 2-form on $\R^3$. By Section 5.3, the pullback of a coordinate 1-form is $\phi^*(dy) = \frac{\p y}{\p u}\,du + \frac{\p y}{\p v}\,dv$, and likewise for $dz$. Wedging two of these together works just as in Section 6.1: the repeated terms vanish and the cross terms leave a $2\times2$ Jacobian determinant,
+\[
+\phi^*(dy \wedge dz) = \phi^*(dy) \wedge \phi^*(dz) = \frac{\p(y,z)}{\p(u,v)}\,du \wedge dv,
+\]
+which is the $x$-component of the cross product $\phi_u \times \phi_v$. Summing the three terms,
+\[
+\phi^*\omega = \bv{F} \cdot (\phi_u \times \phi_v)\,du \wedge dv, \qquad \bv{F} = \langle P, Q, R \rangle,
+\]
+so the integral is
+\[
+\int_S \omega = \iint_D \bv{F} \cdot (\phi_u \times \phi_v)\,du\,dv.
+\]
+This is the flux integral of $\bv{F}$ through the surface. The integrand $\bv{F} \cdot d\bv{S}$ is the pullback of the 2-form $\omega$.
+
+While these integrals were built using operations specific to $\R^3$, the dot product and the cross product, the pullback definition produces an equivalent result in a generalized dimension: it needs only a $k$-form and a parameterization.
+
+\subsection{Orientation}
+
+Orientation is already familiar from Vector Calculus. A curve is traversed in one of two directions, and a surface has two sides for its normal. Each is a binary choice, and reversing it flips the sign of the corresponding integral. Section 6.1 showed where that sign lives for a form: rewriting an $n$-form in new coordinates multiplies it by the Jacobian determinant, so a coordinate change that reverses orientation flips the sign of the form itself. The sign is carried by the $n$-form. To integrate over a manifold, we must fix which choice is positive and hold it consistently at every point.
+
+\subsubsection{Orientation at a Point}
+
+At a point on an $n$-manifold, the $n$-forms form a one dimensional space, as shown in Section 6.1. Any two nonzero $n$-forms at the point are therefore scalar multiples of each other, and that scalar is either positive or negative. A single nonzero $n$-form thus sorts all other forms into two types: those that are a positive multiple of it and those that are a negative multiple. There are exactly two types because a nonzero scalar has exactly one sign.
+
+These two types are the two orientations at the point. Choosing one of them as positive is the same binary choice as picking a direction along a curve or a side for a surface's normal, now recorded by the sign of the $n$-form instead of a direction. In $\R^n$, the standard orientation is the type of $dx^1 \wedge \cdots \wedge dx^n$. Swapping any two of the $dx^i$ swaps to the other type, since the wedge is antisymmetric, which is the sign flip that reverses an orientation.
+
+\subsubsection{Orientation Across a Manifold}
+
+Orienting a manifold means making this choice across every point, where there is no contradiction between nearby points. A nowhere-vanishing $n$-form does exactly this. It is nonzero at every point, so it selects a type there, and it is smooth, so the selected type cannot jump between neighboring points.
+
+Recall from Section 6.1 that rewriting an $n$-form in new coordinates multiplies it by the Jacobian determinant of the change. When that determinant is positive, two overlapping charts select the same type on their overlap. When the determinant is negative, they select opposite types. A manifold is orientable when its charts can be chosen so that every transition map has a positive Jacobian determinant, and fixing such a choice of charts orients the manifold.
+
+Not every manifold is orientable. On the M\"obius strip, following the surface once around returns to the same point but with the orientation reversed, flipping the sign of $dx^1 \wedge dx^2$. No nowhere-vanishing $n$-form can remain consistent through this reversal, so the strip has no orientation. The plane and the sphere, having no such loop, are orientable.
+
+Fixing an orientation on an orientable manifold removes the sign ambiguity from the parameterized integral, so the integral over an oriented region has a single, well-defined value. The next section assembles these regional integrals into an integral over the entire manifold.
+
+\subsection{Integration over a Manifold}
+
+The parameterized integral of Section 6.2 covers a region described by a single parameterization. However, most manifolds are not of this kind. The sphere $S^2$, for example, cannot be covered by a single chart. To integrate over such a manifold, we must cover it with charts from an oriented atlas and combine the integrals over them.
+
+Let $\omega$ be the differential $n$-form we wish to integrate over a manifold $M$. The tool for combining the charts is a partition of unity: a collection of smooth functions $\rho_i$, that are each nonzero only within a single chart, and whose values at any point $p$ add up to one, $\sum_i \rho_i(p) = 1$. Multiplying $\omega$ by these functions splits it into pieces,
+\[
+\omega = \sum_i \rho_i \omega,
+\]
+each nonzero only within one chart. Every piece is then an integral over a single parameterized region, evaluated as in Section 6.2, and we define the integral over the manifold as their sum:
+\[
+\int_M \omega = \sum_i \int_M \rho_i \omega.
+\]
+
+While different choices of charts or functions $\rho_i$ split $\omega$ differently, the total value of the integral is the same. Where charts overlap, the fixed orientation from Section 6.3 keeps their contributions to the total sum consistent, so every valid choice gives the same result. This technique of splitting the integral across the charts is what allows us to define integration of a form over a manifold.
+
+\subsection{Orientation of the Boundary}
+
+Every boundary integral in Vector Calculus comes with a direction. Green's Theorem traverses the boundary curve counterclockwise, and the Divergence Theorem uses the outward normal on the boundary surface. To integrate a form over the boundary of a manifold, we need an orientation on $\p M$. Section 2.4 defined $\p M$ as an $(n-1)$-manifold. We now must orient it based on the existing orientation of $M$.
+
+Consider the disk $x^2 + y^2 \le 1$ in $\R^2$. Its boundary is the unit circle. At a point on the circle, the tangent space is one dimensional, spanned by the direction along the circle. It does not contain the direction normal to the circle, which points either into the disk or out of it.
+
+The same picture holds in general. At a point $p$ on the boundary of an $n$-manifold $M$, the tangent space $T_p(\p M)$ is an $(n-1)$-dimensional subspace of the $n$-dimensional $T_pM$. A tangent vector in $T_pM$ that does not lie in $T_p(\p M)$ points either into $M$ or out of it, and which one is a property of $M$ alone. We take $\bv{n}$ to be any vector that points out of $M$. The choice among such vectors does not matter, since any two give the same orientation below. An ordered basis $(\bv{v}_1, \dots, \bv{v}_{n-1})$ of $T_p(\p M)$ is positively oriented for $\p M$ when
+\[
+(\bv{n}, \bv{v}_1, \dots, \bv{v}_{n-1})
+\]
+is positively oriented for $M$. Placing the outward vector first induces an orientation on $\p M$ from the one on $M$.
+
+This reproduces the conventions of Vector Calculus. Consider a region $D$ in the plane with its standard orientation. Its boundary is a curve, and using the outward vector orients that curve counterclockwise, with the region on the left. This is the positively oriented boundary of Green's Theorem.
+
+Take instead a solid region $V$ in $\R^3$. Its boundary is a surface, and the same rule assigns it the outward-pointing normal. This is the orientation used in the Divergence Theorem.
+
+With this convention, $\p M$ is an oriented $(n-1)$-manifold, so the integral $\int_{\p M} \omega$ is well defined by Section 6.4. The manifold and its boundary are now both oriented and ready to integrate over. Relating an integral over $M$ to an integral over $\p M$ is the work of the next two chapters, which will culminate in the Generalized Stokes' Theorem.
+
 \section{Exterior Derivative}
 \section{Generalized Stokes' Theorem}
 
 \section{Appendix}
 
-\subsection*{Evaluation of Basis 1-Forms on Tangent Vectors}
+\subsection{Whitney's Theorems}
 
-Given a basis 1-form $dx^i$ dual to the coordinate vector field $\frac{\p}{\p x^i}$ at a point on a manifold, its evaluation on a coordinate vector $\frac{\p}{\p x^j}$ is given by
-\[
-dx^i \left( \frac{\p}{\p x^j}\right) = \delta_{ij}
-\]
-where
-\[
-\delta_{ij} = \begin{cases}
-1 & \text{if } i = j \\
-0 & \text{if } i \neq j
-\end{cases}
-\]
-is the Kronecker delta. Therefore, a basis 1-form extracts a single coordinate direction from a tangent vector. For example,
-\[
-dx^1 \left( \frac{\p}{\p x^1}\right) = 1, \qquad dx^1 \left( \frac{\p}{\p x^2}\right) = 0.
-\]
-A general tangent vector $\bv{v} = v^i \frac{\p}{\p x^i}$ is mapped by linearity to $dx^j(\bv{v}) = v^j$: the basis 1-form $dx^j$ simply reads off the $j$-th component of $\bv{v}$.
+An important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
 
-Another important remark about immersions and embeddings is their connection with the Whitney immersion theorem and the strong Whitney embedding theorem. The Whitney immersion theorem states that any smooth $n$-dimensional manifold can be immersed in $\R^{2n-1}$, while the strong Whitney embedding theorem says that any smooth $n$-dimensional manifold can be embedded in $\R^{2n}$. An excellent example of this is the Klein bottle, a 2-manifold. The Klein bottle can exist in $\R^3$ as an immersion, however, it must intersect itself to stay closed. It can only be embedded in $\R^4$ where it stays closed without intersection.
-
+\subsection{Coordinate Dependence}
 
 A coordinate dependent object is an artifact from the given coordinate system and does not represent the geometry of the overall space. For example, consider the second partial derivative of a function with respect to a particular coordinate. By the chain rule, the first derivative transforms as
 
@@ -572,8 +700,53 @@ This result does not obey the tensor transformation law, and contains a coordina
 \[
 \frac{\p}{\p x^i}
 \]
-	
+
 is tied to the particular coordinate system $x^i$. When the coordinates change, these operators change in a way that reflects the coordinate grid rather than the intrinsic geometry. This is why the second partial derivative is not intrinsically geometric, as it combines the function's intrinsic curvature with the curvature of the coordinate grid.
+
+\subsection{Evaluation of Basis 1-Forms on Tangent Vectors}
+
+Given a basis 1-form $dx^i$ dual to the coordinate vector field $\frac{\p}{\p x^i}$ at a point on a manifold, its evaluation on a coordinate vector $\frac{\p}{\p x^j}$ is given by
+\[
+dx^i \left( \frac{\p}{\p x^j}\right) = \delta_{ij}
+\]
+where
+\[
+\delta_{ij} = \begin{cases}
+1 & \text{if } i = j \\
+0 & \text{if } i \neq j
+\end{cases}
+\]
+is the Kronecker delta. Therefore, a basis 1-form extracts a single coordinate direction from a tangent vector. For example,
+\[
+dx^1 \left( \frac{\p}{\p x^1}\right) = 1, \qquad dx^1 \left( \frac{\p}{\p x^2}\right) = 0.
+\]
+A general tangent vector $\bv{v} = v^i \frac{\p}{\p x^i}$ is mapped by linearity to $dx^j(\bv{v}) = v^j$: the basis 1-form $dx^j$ simply reads off the $j$-th component of $\bv{v}$.
+
+\subsection{Independence of Parameterization}
+
+The definition $\int_S \omega = \int_D \phi^*\omega$ was written using one parameterization $\phi$. A region has many parameterizations, so we must confirm that a different choice gives the same value.
+
+Let $\phi: D \to S$ and $\psi: D' \to S$ be two parameterizations of the same region. They are related by the reparameterization
+\[
+\tau = \phi^{-1} \circ \psi : D' \to D, \qquad \psi = \phi \circ \tau,
+\]
+a smooth invertible map between regions of $\R^k$. Since the pullback is defined by composition, pulling back through $\psi = \phi \circ \tau$ is the same as pulling back through $\phi$ and then through $\tau$:
+\[
+\psi^*\omega = \tau^*(\phi^*\omega).
+\]
+Write the $k$-form $\phi^*\omega$ on $D$ as $g\,dx^1 \wedge \cdots \wedge dx^k$. Pulling back through $\tau$ introduces the Jacobian determinant, as in Section 6.1:
+\[
+\tau^*(\phi^*\omega) = (g \circ \tau)\,\det(J_\tau)\,du^1 \wedge \cdots \wedge du^k.
+\]
+Integrating $\phi^*\omega$ over $D$ and $\psi^*\omega$ over $D'$ gives
+\[
+\int_S \omega = \int_D g\,dx^1 \cdots dx^k, \qquad \int_{D'} \psi^*\omega = \int_{D'} (g \circ \tau)\,\det(J_\tau)\,du^1 \cdots du^k.
+\]
+The ordinary change of variables theorem relates these two integrals, but with the absolute value of the Jacobian determinant:
+\[
+\int_D g\,dx^1 \cdots dx^k = \int_{D'} (g \circ \tau)\,|\det(J_\tau)|\,du^1 \cdots du^k.
+\]
+The two results agree when $\det(J_\tau) > 0$ and differ by a sign when $\det(J_\tau) < 0$. A reparameterization with positive Jacobian determinant preserves orientation and leaves the integral unchanged; one with negative Jacobian determinant reverses orientation and flips the sign. The integral over a parameterized region is therefore well defined only after an orientation is fixed, so that the parameterizations agreeing with it give the same value.
 
 
 
